@@ -24,12 +24,14 @@ def set_score (data):
 
 #calculate averages
 def calculate_averages():
-	averages = {"index":0.0,"violent":0.0,"property":0.0,"murder":0.0,
-		   		"forcible rape":0.0,"robbery":0.0, "aggravated assault":0.0,
-		   		"burglary":0.0,"larceny theft":0.0,"vehicle theft":0.0}
-	scores = {"index":0.0,"violent":0.0,"property":0.0,"murder":0.0,
-		   	  "forcible rape":0.0,"robbery":0.0, "aggravated assault":0.0,
-		   	  "burglary":0.0,"larceny theft":0.0,"vehicle theft":0.0}
+	averages = {'population':0.0,'index':0.0,'violent':0.0,'property':0.0,
+				'murder':0.0,'forcible rape':0.0,'robbery':0.0,
+				'aggravated assault':0.0,'burglary': 0.0,'larceny theft':0.0,
+				'vehicle theft':0}
+	scores = {'population':0.0,'index':0.0,'violent':0.0,'property':0.0,
+				'murder':0.0,'forcible rape':0.0,'robbery':0.0,
+				'aggravated assault':0.0,'burglary': 0.0,'larceny theft':0.0,
+				'vehicle theft':0}
 	count = 0.0
 	for i in range (0, 40):
 		years_measured = len(crimedata[i]['data'])
@@ -52,22 +54,29 @@ with open('crimedata.json', 'r') as f:
      crimedata = json.loads(read_data)
 f.closed
 
-#initialize weights and calculate averages
-weights = {"index":0.0,"violent":0.0,"property":0.0,"murder":0.0,
-		   "forcible rape":0.0,"robbery":0.0, "aggravated assault":0.0,
-		   "burglary":0.0,"larceny theft":0.0,"vehicle theft":0.0}
+#initialize weights
+weights = {"population":0.0,"index":0.0,"violent":0.0,"property":0.0,
+		   "murder":0.0,"forcible rape":0.0,"robbery":0.0,
+		   "aggravated assault":0.0,"burglary":0.0,"larceny theft":0.0,
+		   "vehicle theft":0.0}
+
+
 averages = calculate_averages()
 
-#adjust weights until reaching statistical significance for accuracy
-num_correct = 0.0
-count = 1.0
-while (num_correct / count < 0.950): # not quite there yet... between 0.915226613211 and 0.950
+#adjust weights
+# all_correct = 0
+# while (all_correct == 0):
+# 	all_correct = 1
+num_correct = 0.0;
+count = 0.0;
+for k in range (0,2000):
 	for i in range (0, 50):
 		years_measured = len(crimedata[i]['data'])
 		for j in range(0, years_measured):
 			data = set_score(crimedata[i]['data'][j])
 			if ((data['score']  > 0 and data['year'] < 1987) or
 				(data['score'] <= 0 and data['year'] >= 1987)):
+				#all_correct = 0
 				adjust_weights(data, weights)
 			else:
 				num_correct += 1

@@ -1,7 +1,6 @@
 import json
 import sys
 import math
-import time
 
 ###############################################################################
 #							 FUNCTION DEFINITIONS							  #
@@ -65,8 +64,8 @@ f.closed
 
 #initialize weights and calculate averages
 # weights = {"index":0.0,"violent":0.0,"property":0.0,"murder":0.0,
-#		   		"forcible rape":0.0,"robbery":0.0, "aggravated assault":0.0,
-#		   		"burglary":0.0,"larceny theft":0.0,"vehicle theft":0.0}
+# 		   "forcible rape":0.0,"robbery":0.0, "aggravated assault":0.0,
+# 		   "burglary":0.0,"larceny theft":0.0,"vehicle theft":0.0}
 # averages = calculate_averages()
 wrong_years = []
 total = 0.0
@@ -77,14 +76,12 @@ for x in range (0, states_measured):
 		#adjust weights until reaching statistical significance for accuracy
 		num_correct = 0.0
 		weights = {"index":0.0,"violent":0.0,"property":0.0,"murder":0.0,
-		   		"forcible rape":0.0,"robbery":0.0, "aggravated assault":0.0,
-		   		"burglary":0.0,"larceny theft":0.0,"vehicle theft":0.0}
+		   "forcible rape":0.0,"robbery":0.0, "aggravated assault":0.0,
+		   "burglary":0.0,"larceny theft":0.0,"vehicle theft":0.0}
 		averages = calculate_averages()
 		count = 0.1
-		start = time.time()
-		end = time.time()
-		while ((num_correct/count < 0.95) and (end-start < 30)): # for full struct: between .9121 and .9123; .9085 and .9090 for "clean weights"
-			for i in range (0, states_measured): # for just last 7: between .900 and .908
+		while (num_correct / count < 0.9085): # between .9121 and .9123; .9085 and .9090 for "clean weights"
+			for i in range (0, states_measured):
 				if (i != x):
 					years_measured = len(crimedata[i]['data'])
 					for j in range(0, years_measured):
@@ -97,7 +94,6 @@ for x in range (0, states_measured):
 						count += 1.0
 						if (count == 1.1): # gets rid of the .1 at the end of count which was originally there to avoid division by 0
 							count = 1.0
-			end = time.time()
 		#now, decide for test data: set scores, measure accuracy of guesses
 		num_correct_test = 0.0
 		count_test = 0.1
@@ -114,3 +110,5 @@ for x in range (0, states_measured):
 			if (count_test == 1.1): # gets rid of the .1 at the end of count_test which was originally there to avoid division by 0
 				count_test = 1.0
 		print num_correct_test / count_test
+print len(wrong_years) / total
+#print year_avg()

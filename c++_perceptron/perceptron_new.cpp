@@ -8,8 +8,7 @@
 using namespace std;
 
 // perceptron.cpp: digital recognizer of whether or not lines are vertical.     
-//        purpose: reads in plates of bitmaps and finds the lines in those      
-//                 images. Prints 1 if the line is considered vertical and      
+//        purpose: reads in lines in bitmaps. Prints 1 if the line is considered vertical and      
 //                 0 if horizontal. (Decision is made based on a constant
 //                 cutoff value.)
 //          input: a sequence of images of lines, each preceded by either a 1

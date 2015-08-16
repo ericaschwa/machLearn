@@ -27,7 +27,7 @@ void find_directions_load (struct img *images, int num_points, double weights[NU
 
 /*
  * main
- * reads in plates of bitmaps and finds the lines in those images.
+ * reads in lines in bitmaps.
  * Prints 1 if the line is considered vertical and 0 if horizontal. 
  * Decision is made based on a constant cutoff value.)
  * input: a sequence of images of lines, each preceded by either a 1

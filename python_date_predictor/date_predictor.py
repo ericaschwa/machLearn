@@ -63,14 +63,8 @@ with open('crimedata.json', 'r') as f: # to use file that includes the test data
      crimedata = json.loads(read_data)
 f.closed
 
-#initialize weights and calculate averages
-# weights = {"index":0.0,"violent":0.0,"property":0.0,"murder":0.0,
-#		   		"forcible rape":0.0,"robbery":0.0, "aggravated assault":0.0,
-#		   		"burglary":0.0,"larceny theft":0.0,"vehicle theft":0.0}
-# averages = calculate_averages()
 wrong_years = []
 total = 0.0
-
 states_measured = len(crimedata)
 for x in range (0, states_measured):
 	if (crimedata[x]['data'] != []):
@@ -114,3 +108,4 @@ for x in range (0, states_measured):
 			if (count_test == 1.1): # gets rid of the .1 at the end of count_test which was originally there to avoid division by 0
 				count_test = 1.0
 		print num_correct_test / count_test
+print wrong_years

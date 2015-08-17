@@ -1,3 +1,11 @@
+
+#########################################################################################################################
+#																														#
+# 		This program exhibits machine learning by reading in crime data by year, and based on correct examples,			#
+#		predicts whether a given set of crime data occurred before or after the mean year from the data set (1987).		#
+#																														#
+#########################################################################################################################
+
 import json
 import sys
 import math

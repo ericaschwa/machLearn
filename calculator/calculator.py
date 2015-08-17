@@ -1,4 +1,3 @@
-# the tricky part of this is the parenthesis (store in stack)
 #########################################################################################################################
 #																														#
 # 						This program is a virtual calculator. Calculates user's math expressionsself. 					#
@@ -7,58 +6,57 @@
 #																														#
 #########################################################################################################################
 
-# TODO: negatives
-# TODO: order of ops other than parentheses
-
 ###############################################################################
 #							 FUNCTION DEFINITIONS							  #
 ###############################################################################
 
-parenthStack = []
+
+#TODO: PEMDAS
+
+# global variable representing the stack containing various parts of the expression, ordered according to parentheses
 expressionStack = []
-# evaluate a user-entered expression
+
+# carries out function of calculator for one-line calculation, taking parentheses into account.
+# Calculations can build upon previous calculations.
 def calculate (expression):
 	parenthStack = []
-	expressionStack = []
-	expressionString = ""
 	for val in expression:
 		if (val == "("):
 			parenthStack.append(val)
-			expressionStack.append(expressionString)
-			expressionString = ""
+			expressionStack.append("")
 		elif (val == ")"):
 			if (len(parenthStack) > 0):
 				parenthStack.pop()
 				prev = expressionStack.pop()
-				expressionString = prev + evaluate(expressionString)
-				expressionString = evaluate(expressionString)
-				expressionStack.append(expressionString)
+				prev = evaluate(prev)
+				if (len(expressionStack) > 0):
+					top = expressionStack.pop()
+				else:
+					top = ""
+				top += prev
+				expressionStack.append(top)
 			else:
 				print "Error: parentheses do not match up"
 				return 1
 		else:
-			expressionString += val
+			if (len(expressionStack) > 0):
+				top = expressionStack.pop()
+			else:
+				top = ""
+			top += val
+			expressionStack.append(top)
 	if (len(parenthStack) != 0):
 		print "Error: parentheses do not match up"
 		return 1
-	#print evaluate(expressionString)
-	# print evaluate(expressionStack.pop())
-	# if (len(expressionStack) > 0):
-	# 	prev = expressionStack.pop()
-	# 	expressionString = prev + evaluate(expressionString)
-	# 	expressionString = evaluate(expressionString)
-	# 	expressionStack.append(expressionString)
+	if (len(expressionStack) > 0):
+		top = expressionStack.pop()
+	else:
+		top = ""
+	top = evaluate(top)
+	expressionStack.append(top + " ")
+	print top
 
-	print expressionStack
-	print expressionString
-
-	# while (len(expressionStack) > 1):
-	# 	prev = evaluate(expressionStack.pop())
-	# 	expressionStack.append(prev + expressionStack.pop())
-	# print expressionStack
-
-	return 0
-
+# evaluates an expression within a parentheses set
 def evaluate (expression):
 	parts = expression.split(" ")
 	if (len(parts) < 3):
@@ -74,14 +72,15 @@ def evaluate (expression):
 		endIndex += 2
 	return start
 
+# applies whatever operation user wanted (+ , -, *, /, ^, or %) to the numbers entered and returns the result
 def f (a,exp,b):
 	return {
-		'+': str(float(a) + float(b)),
-		'-': str(float(a) - float(b)),
-		'*': str(float(a) * float(b)),
-		'/': str(float(a) / float(b)),
-		'^': str(pow(float(a), float(b))),
-		'%': str(float(a) % float(b)),
+		'+': str(float(a) + float(b)), #third
+		'-': str(float(a) - float(b)), #third
+		'*': str(float(a) * float(b)), #second
+		'/': str(float(a) / float(b)), #second
+		'^': str(pow(float(a), float(b))), #first
+		'%': str(float(a) % float(b)), #second
 	}[exp]
 
 ###############################################################################

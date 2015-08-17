@@ -7,6 +7,7 @@
 #########################################################################################################################
 
 import math
+import sys
 
 ###############################################################################
 #							 FUNCTION DEFINITIONS							  #
@@ -16,7 +17,7 @@ import math
 # Calculations can build upon previous calculations.
 def calculate (expression, expressionStack):
 	parenthStack = []
-	if (not(expression[0] == '^' or expression[0] == '*' or expression[0] == '/' or expression[0] == '%' or expression[0] == '+' or expression[0] == '-')):
+	if (not(expression[0] == '^' or expression[0] == '*' or expression[0] == '/' or expression[0] == '+' or expression[0] == '-')):
 		expressionStack = [] # start fresh with new stack
 	for val in expression:
 		if (val == "("): # start of a parenthesized statement
@@ -35,7 +36,7 @@ def calculate (expression, expressionStack):
 				expressionStack.append(top)
 			else:
 				print "Error: parentheses do not match up"
-				return []
+				sys.exit(0)
 		else: # non-parenthesis value added; push it to the stack
 			if (len(expressionStack) > 0):
 				top = expressionStack.pop()
@@ -45,7 +46,7 @@ def calculate (expression, expressionStack):
 			expressionStack.append(top)
 	if (len(parenthStack) != 0):
 		print "Error: parentheses do not match up"
-		return []
+		sys.exit(0)
 	if (len(expressionStack) > 0):
 		top = expressionStack.pop()
 	else:
@@ -70,7 +71,7 @@ def evaluate (expression):
 			parts.pop(i)
 		i += 1
 
-	# M and D in PEMDAS (and mod)
+	# M and D in PEMDAS
 	i = 0
 	while (i < len(parts)):
 		if (parts[i] == '*'):
@@ -78,11 +79,10 @@ def evaluate (expression):
 			parts.pop(i)
 			parts.pop(i)
 		elif (parts[i] == '/'):
+			if (float(parts[i + 1]) == 0.0):
+				print "Error: division by zero"
+				sys.exit(0)
 			parts[i - 1] = str(float(parts[i - 1]) / float(parts[i + 1]))
-			parts.pop(i)
-			parts.pop(i)
-		elif (parts[i] == '%'):
-			parts[i - 1] = str(float(parts[i - 1]) % float(parts[i + 1]))
 			parts.pop(i)
 			parts.pop(i)
 		i += 1
@@ -99,7 +99,7 @@ def evaluate (expression):
  		endIndex += 2
  	return start
 
-# applies whatever operation user wanted (+ , -, *, /, ^, or %) to the numbers entered and returns the result
+# applies whatever operation user wanted (+ , -, *, /, or ^) to the numbers entered and returns the result
 def f (a,exp,b):
  	return {
 		'+': str(float(a) + float(b)), #third
@@ -107,7 +107,6 @@ def f (a,exp,b):
 		'*': str(float(a) * float(b)), #second
 		'/': str(float(a) / float(b)), #second
 		'^': str(math.pow(int(float(a)), int(float(b)))), #first
-		'%': str(float(a) % float(b)), #second
  	}[exp]
 
 ###############################################################################

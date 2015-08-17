@@ -4,4 +4,7 @@ must learn what these symbols mean
 
 To run: python "calcluator.py"
 
-As it currently stands, the program passes all tests. It respects order of operations (PEMDAS), and can also do mod and handle floats and negative numbers.
+As it currently stands, the program passes all tests, and respects order of operations (PEMDAS),
+and can handle negative and floating point numbers.
+
+Dividing by 0 is a checked runtime error, as are parentheses errors

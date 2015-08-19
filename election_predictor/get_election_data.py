@@ -112,7 +112,8 @@ make_election_data()
 elections = get_election_data()
 crimedata = get_crime_data()
 data = combine_structures(elections, crimedata)
+j = json.dumps(data)
 with open('data.json', 'w') as f:
-	    	f.write(data)
+	    	f.write(j)
 f.closed
 

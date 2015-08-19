@@ -76,7 +76,7 @@ total = 0.0
 states_measured = len(crimedata)
 for x in range (0, states_measured):
 	if (crimedata[x]['data'] != []):
-		#adjust weights until reaching statistical significance for accuracy
+		#adjust weights until reaching certain standard for accuracy (stastistical significance or a time limit)
 		num_correct = 0.0
 		weights = {"index":0.0,"violent":0.0,"property":0.0,"murder":0.0,
 		   		"forcible rape":0.0,"robbery":0.0, "aggravated assault":0.0,
@@ -85,6 +85,7 @@ for x in range (0, states_measured):
 		count = 0.1
 		start = time.time()
 		end = time.time()
+
 		while ((num_correct/count < 0.95) and (end-start < 30)): # for full struct: between .9121 and .9123; .9085 and .9090 for "clean weights"
 			for i in range (0, states_measured): # for just last 7: between .900 and .908
 				if (i != x):
@@ -100,6 +101,7 @@ for x in range (0, states_measured):
 						if (count == 1.1): # gets rid of the .1 at the end of count which was originally there to avoid division by 0
 							count = 1.0
 			end = time.time()
+			
 		#now, decide for test data: set scores, measure accuracy of guesses
 		num_correct_test = 0.0
 		count_test = 0.1

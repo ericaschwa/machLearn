@@ -60,6 +60,13 @@ def make_election_data():
 	    	f.write(j)
 	f.closed
 
+# get financial data for each state by year, from excel files
+# http://www.census.gov/prod/2011pubs/11statab/stlocgov.pdf
+# http://www.census.gov/compendia/statab/2011/2011edition.html
+# http://www.census.gov/compendia/statab/cats/state_local_govt_finances_employment/state_government_finances.html
+# files in downloads folder
+def make_state_data():
+	return 0
 
 # get election data by state and year
 def get_election_data():

@@ -65,7 +65,7 @@ def year_avg():
 #									MAIN									  #
 ###############################################################################
 
-#open file containing sample data json
+#open file containing data json
 with open('crimedata.json', 'r') as f: # to use file that includes the test data (accuracy: 0.962962962963)
      read_data = f.read()
      crimedata = json.loads(read_data)

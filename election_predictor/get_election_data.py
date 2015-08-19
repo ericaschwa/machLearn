@@ -1,7 +1,7 @@
 #########################################################################################################################
 #																														#
-# 	This program exhibits machine learning by reading in various pieces of data by state and year, and based on 		#
-#	correct examples, predicts the outcome of the closest upcoming presidential election to that date in that state.	#
+# 	This program reads in data structures containing crime and election data from JSON files and excels, combines		#
+#						them into one JSON object, and prints this JSON object to a file.								#
 #																														#
 #########################################################################################################################
 
@@ -87,20 +87,20 @@ def combine_structures(elections, crimedata):
 			if (crimedata[x]['data'][y]['year'] >= 1973 and crimedata[x]['data'][y]['year'] <= 2012 and crimedata[x]['name'] != 'USA'):
 				for i in range(0,len(elections)):
 					if (elections[i]['state'] == crimedata[x]['name'] and elections[i]['year'] == crimedata[x]['data'][y]['year']):
-						dataPoint = {"result": 				elections[i]['result'],
-									 "index":				crimedata[x]['data'][y]['index'],
-									 "violent":				crimedata[x]['data'][y]['violent'],
-									 "property":			crimedata[x]['data'][y]['property'],
-									 "murder":				crimedata[x]['data'][y]['murder'],
-									 "forcible rape":		crimedata[x]['data'][y]['forcible rape'],
-									 "robbery":				crimedata[x]['data'][y]['robbery'],
-									 "aggravated assault":	crimedata[x]['data'][y]['aggravated assault'],
-									 "burglary":			crimedata[x]['data'][y]['burglary'],
-									 "larceny theft":		crimedata[x]['data'][y]['larceny theft'],
-									 "vehicle theft":		crimedata[x]['data'][y]['vehicle theft'],
-									 "state": 				elections[i]['state'],
-									 "year": 				elections[i]['year']}
-						data.append(dataPoint)
+						dataPt = {"result": 			elections[i]['result'],
+								  "index":				crimedata[x]['data'][y]['index'],
+								  "violent":			crimedata[x]['data'][y]['violent'],
+								  "property":			crimedata[x]['data'][y]['property'],
+								  "murder":				crimedata[x]['data'][y]['murder'],
+								  "forcible rape":		crimedata[x]['data'][y]['forcible rape'],
+								  "robbery":			crimedata[x]['data'][y]['robbery'],
+								  "aggravated assault":	crimedata[x]['data'][y]['aggravated assault'],
+								  "burglary":			crimedata[x]['data'][y]['burglary'],
+								  "larceny theft":		crimedata[x]['data'][y]['larceny theft'],
+								  "vehicle theft":		crimedata[x]['data'][y]['vehicle theft'],
+								  "state": 				elections[i]['state'],
+								  "year": 				elections[i]['year']}
+						data.append(dataPt)
 						break
 	return data
 

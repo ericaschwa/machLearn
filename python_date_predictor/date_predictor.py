@@ -1,10 +1,11 @@
 
-#########################################################################################################################
-#																														#
-# 		This program exhibits machine learning by reading in crime data by year, and based on correct examples,			#
-#		predicts whether a given set of crime data occurred before or after the mean year from the data set (1987).		#
-#																														#
-#########################################################################################################################
+###############################################################################
+#																			  #
+# 		This program exhibits machine learning by reading in crime data 	  #
+#		by year, and based on correct examples, predicting whether a given	  #
+#		set of crime data occurred before or after the mean year.			  #
+#																			  #
+###############################################################################
 
 import json
 import sys
@@ -66,7 +67,8 @@ def year_avg():
 ###############################################################################
 
 #open file containing data json
-with open('crimedata.json', 'r') as f: # to use file that includes the test data (accuracy: 0.962962962963)
+# to use file that includes the test data (accuracy: 0.962962962963)
+with open('crimedata.json', 'r') as f:
      read_data = f.read()
      crimedata = json.loads(read_data)
 f.closed
@@ -76,7 +78,8 @@ total = 0.0
 states_measured = len(crimedata)
 for x in range (0, states_measured):
 	if (crimedata[x]['data'] != []):
-		#adjust weights until reaching certain standard for accuracy (stastistical significance or a time limit)
+		# adjust weights until reaching certain standard for accuracy
+		# (stastistical significance or a time limit)
 		num_correct = 0.0
 		weights = {"index":0.0,"violent":0.0,"property":0.0,"murder":0.0,
 		   		"forcible rape":0.0,"robbery":0.0, "aggravated assault":0.0,
@@ -86,8 +89,11 @@ for x in range (0, states_measured):
 		start = time.time()
 		end = time.time()
 
-		while ((num_correct/count < 0.95) and (end-start < 30)): # for full struct: between .9121 and .9123; .9085 and .9090 for "clean weights"
-			for i in range (0, states_measured): # for just last 7: between .900 and .908
+		# for full struct: between .9121 and .9123;
+		# .9085 and .9090 for "clean weights"
+		while ((num_correct/count < 0.95) and (end-start < 30)):
+			# for just last 7: between .900 and .908
+			for i in range (0, states_measured): 
 				if (i != x):
 					years_measured = len(crimedata[i]['data'])
 					for j in range(0, years_measured):
@@ -98,7 +104,9 @@ for x in range (0, states_measured):
 						else:
 							num_correct += 1.0
 						count += 1.0
-						if (count == 1.1): # gets rid of the .1 at the end of count which was originally there to avoid division by 0
+						# gets rid of the .1 at the end of count
+						# which was originally there to avoid division by 0
+						if (count == 1.1):
 							count = 1.0
 			end = time.time()
 			
@@ -115,7 +123,9 @@ for x in range (0, states_measured):
 				num_correct_test += 1.0
 			count_test += 1.0
 			total += 1.0
-			if (count_test == 1.1): # gets rid of the .1 at the end of count_test which was originally there to avoid division by 0
+			# gets rid of the .1 at the end of count
+			# which was originally there to avoid division by 0
+			if (count_test == 1.1):
 				count_test = 1.0
 		print num_correct_test / count_test
 print wrong_years

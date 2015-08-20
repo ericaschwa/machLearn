@@ -1,21 +1,23 @@
-#########################################################################################################################
-#																														#
-# 	This program exhibits machine learning by reading in various pieces of data by state and year, and based on 		#
-#	correct examples, predicts the outcome of the closest upcoming presidential election to that date in that state.	#
-#																														#
-# 		Accuracy values and significance of the difference between these values and a 50% accuracy (guessing)			#
-#			P value and statistical significance: 																		#
-#  			The two-tailed P value is less than 0.0001																	#
-#  			By conventional criteria, this difference is considered to be extremely statistically significant. 			#
-#																														#
-#			Confidence interval:																						#
-#			The hypothetical mean is 0.50000000000000 																	#
-#			The actual mean is 0.61218625619354 																		#
-#			The difference between these two values is 0.11218625619354													#
-#			The 95% confidence interval of this difference:																#
-#			From 0.10008778380232 to 0.12428472858476 (source: http://graphpad.com/quickcalcs/oneSampleT2/)				#
-#																														#
-#########################################################################################################################
+###############################################################################
+#																			  #
+# 	This program exhibits machine learning by reading in various pieces of 	  #
+#	data by state and year, and based on correct examples, predicts the 	  #
+#	outcome of the closest upcoming presidential election to that date in 	  #
+#	that state.																  #
+#																			  #
+#	Used crime data because that was the data available to me.				  #
+#																			  #
+#		Accuracy: .574973600845												  #
+# 		Accuracy values and significance of the difference between these	  #
+#			values and a 50% accuracy (guessing)							  #
+#			P value and statistical significance: 							  #
+#  			The two-tailed P value is less than 0.0001						  #
+#  			By conventional criteria, this difference is considered to be 	  #
+#			extremely statistically significant. 							  #
+#																			  #
+#			 (source: http://graphpad.com/quickcalcs/oneSampleT2/)			  #
+#																			  #
+###############################################################################
 
 import json
 import sys
@@ -45,9 +47,10 @@ def set_score (data):
 
 #calculate averages of different values
 def calculate_averages():
-	averages = {"index":0.0,"violent":0.0,"property":0.0,"murder":0.0,
-		   		"forcible rape":0.0,"robbery":0.0, "aggravated assault":0.0,
-		   		"burglary":0.0,"larceny theft":0.0,"vehicle theft":0.0, "year":0.0}
+	averages = {"index":0.0, "violent":0.0, "property":0.0, "murder":0.0,
+			   "forcible rape":0.0, "robbery":0.0, "aggravated assault":0.0,
+	   			"burglary":0.0, "larceny theft":0.0, "vehicle theft":0.0,
+	   			"population:":0.0, "year":0.0}
 	for val in averages:
 		count = 0.0
 		score = 0.0
@@ -71,11 +74,13 @@ wrong_results = []
 num_correct_test = 0.0
 count_test = 0.1
 for x in range (0, len(data)):
-	#adjust weights until reaching certain standard for accuracy (stastistical significance or a time limit)
+	#adjust weights until reaching certain standard for accuracy
+	#(stastistical significance or a time limit)
 	num_correct = 0.0
-	weights = {"index":0.0,"violent":0.0,"property":0.0,"murder":0.0,
-	   		"forcible rape":0.0,"robbery":0.0, "aggravated assault":0.0,
-	   		"burglary":0.0,"larceny theft":0.0,"vehicle theft":0.0, "year":0.0}
+	weights = {"index":0.0, "violent":0.0, "property":0.0, "murder":0.0,
+			   "forcible rape":0.0, "robbery":0.0, "aggravated assault":0.0,
+	   			"burglary":0.0, "larceny theft":0.0, "vehicle theft":0.0,
+	   			"population:":0.0, "year":0.0}
 	averages = calculate_averages()
 	count = 0.1
 	start = time.time()
@@ -91,7 +96,9 @@ for x in range (0, len(data)):
 				else:
 					num_correct += 1.0
 				count += 1.0
-				if (count == 1.1): # gets rid of the .1 at the end of count which was originally there to avoid division by 0
+				# gets rid of the .1 at the end of count
+				# which was originally there to avoid division by 0
+				if (count == 1.1): 
 					count = 1.0
 		end = time.time()
 
@@ -103,7 +110,9 @@ for x in range (0, len(data)):
 	else:
 		num_correct_test += 1.0
 	count_test += 1.0
-	if (count_test == 1.1): # gets rid of the .1 at the end of count_test which was originally there to avoid division by 0
+	# gets rid of the .1 at the end of count
+	# which was originally there to avoid division by 0
+	if (count_test == 1.1):
 		count_test = 1.0
 
 print num_correct_test / count_test

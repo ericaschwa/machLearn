@@ -117,7 +117,6 @@ def combine_structures(elections, crimedata):
 							"burglary":				this['burglary'],
 							"larceny theft":		this['larceny theft'],
 							"vehicle theft":		this['vehicle theft'],
-							"population":			this['population'],
 							"state": 				elections[i]['state'],
 							"year": 				elections[i]['year']
 						}

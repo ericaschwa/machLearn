@@ -1,10 +1,11 @@
-#########################################################################################################################
-#																														#
-# 						This program is a virtual calculator. Calculates user's math expressionsself. 					#
-#					User presses enter when done typing expression; enters Q when done using calculator.				#
-#					Each component must be separated from others by a space, except for	parentheses.					#
-#																														#
-#########################################################################################################################
+###############################################################################
+#																			  #
+# 	This program is a virtual calculator. Calculates user's math 			  #
+#	expressions. User presses enter when done typing expression; enters		  #
+#	Q when done using calculator. Each component must be separated from		  #
+#	others by a space, except for parentheses.								  #
+#																			  #
+###############################################################################
 
 import math
 import sys
@@ -13,17 +14,24 @@ import sys
 #							 FUNCTION DEFINITIONS							  #
 ###############################################################################
 
-# carries out function of calculator for one-line calculation, taking parentheses into account.
+# carries out function of calculator for one-line calculation,
+# taking parentheses into account.
 # Calculations can build upon previous calculations.
 def calculate (expression, expressionStack):
 	parenthStack = []
-	if (not(expression[0] == '^' or expression[0] == '*' or expression[0] == '/' or expression[0] == '+' or expression[0] == '-')):
+	if (not(expression[0] == '^' or
+		    expression[0] == '*' or
+		    expression[0] == '/' or
+		    expression[0] == '+' or
+		    expression[0] == '-')):
 		expressionStack = [] # start fresh with new stack
 	for val in expression:
 		if (val == "("): # start of a parenthesized statement
 			parenthStack.append(val)
 			expressionStack.append("")
-		elif (val == ")"): # end of a parenthesized statement; evaluate the statement and push the result back to the stack
+		elif (val == ")"): 
+		# end of a parenthesized statement;
+		# evaluate the statement and push the result back to the stack
 			if (len(parenthStack) > 0):
 				parenthStack.pop()
 				prev = expressionStack.pop()
@@ -66,7 +74,8 @@ def evaluate (expression):
 	i = 0
 	while (i < len(parts)):
 		if (parts[i] == '^'):
-			parts[i - 1] = str(math.pow(int(float(parts[i - 1])), int(float(parts[i + 1]))))
+			parts[i - 1] = str(math.pow(int(float(parts[i - 1])),
+									 	int(float(parts[i + 1]))))
 			parts.pop(i)
 			parts.pop(i)
 		i += 1
@@ -99,7 +108,8 @@ def evaluate (expression):
  		endIndex += 2
  	return start
 
-# applies whatever operation user wanted (+ , -, *, /, or ^) to the numbers entered and returns the result
+# applies whatever operation user wanted (+ , -, *, /, or ^)
+# to the numbers entered and returns the result
 def f (a,exp,b):
  	return {
 		'+': str(float(a) + float(b)), #third

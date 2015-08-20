@@ -8,9 +8,9 @@
 using namespace std;
 
 // perceptron.cpp: digital recognizer of whether or not lines are vertical.     
-//        purpose: reads in lines in bitmaps. Prints 1 if the line is considered vertical and      
-//                 0 if horizontal. (Decision is made based on a constant
-//                 cutoff value.)
+//        purpose: reads in lines in bitmaps. Prints 1 if the line is     
+//                 considered vertical and 0 if horizontal. (Decision is made
+//                 based on a constant cutoff value.)
 //          input: a sequence of images of lines, each preceded by either a 1
 //                 (if the line is vertical) or 0 (if the line is horizontal).
 //                 Input ends with a sentinel value of -1.
@@ -237,11 +237,13 @@ bool find_directions_save (Line lines [MAX_LINES], int num_lines,
 		    lines[i].calculated_direction = 0;
 		else
 		    lines[i].calculated_direction = 1;
-		if (lines[i].calculated_direction != lines[i].true_direction) { // incorrect answer
+		if (lines[i].calculated_direction != lines[i].true_direction) { 
+			// incorrect answer
 		    all_correct = false;
 		    for (int r = 0; r < IMG_HGT; r++) {
 				for (int c = 0; c < IMG_WID; c++) {
-				    if (lines[i].image[r][c] == '1') { // adjust weights that caused incorrect result
+				    if (lines[i].image[r][c] == '1') {
+				    // adjust weights that caused incorrect result
 						if (lines[i].calculated_direction <
 						    lines[i].true_direction)
 						    weights[r][c] = weights[r][c] + .01;
@@ -253,10 +255,11 @@ bool find_directions_save (Line lines [MAX_LINES], int num_lines,
 		    }
 		}
     }
-    if (all_correct) { // keep going and adjusting weights until it gets them all correct
+    // keep going and adjusting weights until it gets them all correct
+    if (all_correct) { 
 		for (int r = 0; r < IMG_HGT; r++) {
 		    for (int c = 0; c < IMG_WID; c++) {
-	                cout << weights[r][c] << endl; // then print the weights
+	                cout << weights[r][c] << endl; // print the weights
 		    }
 		}
 		return true;
@@ -286,7 +289,8 @@ void find_directions_load (Line lines [MAX_LINES], int num_lines,
 {
     set_line_scores(lines, num_lines, weights);
     
-    for (int i = 0; i < num_lines; i++) { // calculate direction based on line score
+    for (int i = 0; i < num_lines; i++) {
+    // calculate direction based on line score
 		if (lines[i].line_score < CUTOFF)
 		    lines[i].calculated_direction = 0;
 		else
@@ -312,7 +316,8 @@ void find_directions_load (Line lines [MAX_LINES], int num_lines,
 //            vertical or horizontal.
 // returns:   void function.
 // effects:   modifies the Line's line_scores.
-void set_line_scores (Line lines [MAX_LINES], int num_lines, double weights[IMG_HGT][IMG_WID])
+void set_line_scores (Line lines [MAX_LINES], int num_lines,
+					  double weights[IMG_HGT][IMG_WID])
 {
     for (int i = 0; i < num_lines; i++) { // calculate line score for each line
 		lines[i].line_score = 0;
@@ -326,21 +331,21 @@ void set_line_scores (Line lines [MAX_LINES], int num_lines, double weights[IMG_
 }
 
 // print                                                                     
-//   purpose: to print out whether the lines input are vertical or horizontal.           
+//   purpose: to print out whether the lines input are vertical or horizontal.         
 // arguments: an array of values of type Line that includes a 2D array of
 //            char values which represents an image of a line, an int value
 //            that represents whether the line is vertical (represented by a
 //            value of 1) or horizontal (represented by a 0), and another int
 //            value that represents whether this program finds the line to be
-//            vertical (1) or horizontal (0), and an int that represents the line's
-//            "line score," which will be used to determine whether the line
-//            is vertical or horizontal.
+//            vertical (1) or horizontal (0), and an int that represents the
+//            line's "line score," which will be used to determine whether the
+//            line is vertical or horizontal.
 //            Also takes an int value that represents the number of lines.                     
 //   returns: void function.                                                    
 //    prints: whether the lines are vertical or horizontal.     
-//   effects: does not modify anything.                                       
-//     notes: Line values must contain the correct answer as to whether the line is
-//            considered vertical or horizontal, according to a constant
+//   effects: does not modify anything.
+//     notes: Line values must contain the correct answer as to whether the line
+//            is considered vertical or horizontal, according to a constant
 //            angle cutoff.  
 void print (Line lines [MAX_LINES], int num_lines)
 {

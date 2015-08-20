@@ -20,10 +20,16 @@ struct img {
 
 struct img *read_images(FILE* fp);
 void analyze (struct img *images, int num_points);
-int find_directions_save (struct img *images, int num_points, double weights[NUM_DATA_POINTS]);
-void set_img_scores (struct img *images, int num_points, double weights[NUM_DATA_POINTS]);
+int find_directions_save (struct    img *images,
+                          int       num_points,
+                          double    weights[NUM_DATA_POINTS]);
+void set_img_scores (struct     img *images,
+                     int        num_points,
+                     double     weights[NUM_DATA_POINTS]);
 void test_images(FILE *fp);
-void find_directions_load (struct img *images, int num_points, double weights[NUM_DATA_POINTS]);
+void find_directions_load (struct   img *images,
+                           int      num_points,
+                           double   weights[NUM_DATA_POINTS]);
 
 /*
  * main
@@ -44,7 +50,7 @@ void find_directions_load (struct img *images, int num_points, double weights[NU
  */
 int main (int argc, char *argv[])
 {
-    if (argc != 3) { /* command line must contain progname and 1 filename */   
+    if (argc != 3) { /* command line must contain progname and 1 filename */
         exit(1);
     }
 
@@ -71,74 +77,85 @@ int main (int argc, char *argv[])
 }
 
 /*
- * Set line scores based on given weights; these line scores will be used to determine
- * whether or not the line is vertical. If the line score is above a given cutoff,
- * it is considered vertical.
+ * Set line scores based on given weights; these line scores will be used to
+ * determine whether or not the line is vertical. If the line score is above a
+ * given cutoff, it is considered vertical.
  */
-void set_img_scores (struct img *images, int num_points, double weights[NUM_DATA_POINTS])
+void set_img_scores (struct img *images, int num_points,
+                     double weights[NUM_DATA_POINTS])
 {
     for (int i = 0; i < num_points; i++) {
         images[i].line_score = 0;
         for (int j = 0; j < NUM_DATA_POINTS; j++) {
-            images[i].line_score = images[i].line_score + (weights[j] * (double)images[i].pix[j]);
+            images[i].line_score = images[i].line_score +
+                                   (weights[j] * (double)images[i].pix[j]);
         }
     }
 }
 
-/*****************************     SAVE FUNCS     *****************************/
+/*****************************     SAVE FUNCS     ****************************/
 
 /*
- * Reads in images from a given file; each image contains a 1 or 0, depending on whether or not it
- * is considered to be vertical, followed by an 8x8 bitmap of pixels.
- * Returns an img data structure containing this information.
+ * Reads in images from a given file; each image contains a 1 or 0, depending
+ * on whether or not it's considered to be vertical, followed by an 8x8 bitmap
+ * of pixels. Returns an img data structure containing this information.
  */
-struct img *read_images(FILE* fp)
+struct img *read_images (FILE* fp)
 {
     long pos = ftell(fp);
     fseek(fp, 0, SEEK_END);
     int length = ftell(fp);
     fseek(fp, pos, SEEK_SET);
     double data_fraction_of_file = 1 / 130.0; // 130 characters per image
-    double num_points = length * data_fraction_of_file; // number of images in the file
+    double num_points = length * data_fraction_of_file; // # images in file
     
     struct img *points = malloc(sizeof(struct img) * num_points);
 
     for (int i = 0; i < num_points; i++) {
-        assert(fscanf(fp, "%d\n", &(points[i].true_direction)) == 1); // read in true direction of image
+        // read in true direction of image
+        assert(fscanf(fp, "%d\n", &(points[i].true_direction)) == 1); 
         for (int j = 0; j < 8; j++) { // read in pixels in bitmap
-            assert(fscanf(fp, "%d %d %d %d %d %d %d %d\n", &(points[i].pix[(j*8)]), &(points[i].pix[(j*8)+1]),
-                                                           &(points[i].pix[(j*8)+2]), &(points[i].pix[(j*8)+3]),
-                                                           &(points[i].pix[(j*8)+4]), &(points[i].pix[(j*8)+5]),
-                                                           &(points[i].pix[(j*8)+6]), &(points[i].pix[(j*8)+7])) == 8);
+            assert(fscanf(fp, "%d %d %d %d %d %d %d %d\n",
+                          &(points[i].pix[(j*8)]), &(points[i].pix[(j*8)+1]),
+                          &(points[i].pix[(j*8)+2]), &(points[i].pix[(j*8)+3]),
+                          &(points[i].pix[(j*8)+4]), &(points[i].pix[(j*8)+5]),
+                          &(points[i].pix[(j*8)+6]), &(points[i].pix[(j*8)+7]))
+                           == 8);
         }
     }
     return points;
 }
 
 /*
- * analyze image data, produce weights for each pixel that will be used to determine whether the image
+ * analyze image data, produce weights for each pixel
+ * that will be used to determine whether the image
  * contains a vertical or horizontal line
  */
 void analyze (struct img *images, int num_points)
 {
     double *weights = malloc(sizeof(double) * NUM_DATA_POINTS);
 
-    for (int i = 0; i < NUM_DATA_POINTS; i++) { // initialize weights to start values
+    // initialize weights to start values
+    for (int i = 0; i < NUM_DATA_POINTS; i++) { 
         weights[i] = START_WEIGHTS;
     }
 
-    find_directions_save(images, num_points, weights); // edit weights based on machine learning
+    // edit weights based on machine learning
+    find_directions_save(images, num_points, weights); 
     free(images);
     free(weights);
 }
 
 /*
- * Given an image with a known verticality, continually changes the weights until it can produce
+ * Given an image with a known verticality,
+ * continually changes the weights until it can produce
  * a formula resulting in a correct answer every time
  */
-int find_directions_save (struct img *images, int num_points, double weights[NUM_DATA_POINTS])
+int find_directions_save (struct img *images, int num_points,
+                          double weights[NUM_DATA_POINTS])
 {
-    int all_correct = 1; // all correct is "true", until an incorrect answer occurs
+    // all correct is "true", until an incorrect answer occurs
+    int all_correct = 1; 
     set_img_scores(images, num_points, weights);
     for (int i = 0; i < num_points; i++) {
         if (images[i].line_score < CUTOFF) { // find calculated direction
@@ -146,20 +163,25 @@ int find_directions_save (struct img *images, int num_points, double weights[NUM
         } else {
             images[i].calculated_direction = 1;
         }
-        if (images[i].calculated_direction != images[i].true_direction) { // incorrect answer
+        if (images[i].calculated_direction != images[i].true_direction) {
+             // incorrect answer
             all_correct = 0;
             for (int j = 0; j < NUM_DATA_POINTS; j++) {
-                if (images[i].pix[j] == 1) { // adjust weights that caused incorrect result
-                    if (images[i].calculated_direction < images[i].true_direction) { 
+                if (images[i].pix[j] == 1) {
+                    // adjust weights that caused incorrect result
+                    if (images[i].calculated_direction <
+                        images[i].true_direction) {
                         weights[j] = weights[j] + .01;
-                    } else if (images[i].calculated_direction > images[i].true_direction) {
+                    } else if (images[i].calculated_direction > 
+                        images[i].true_direction) {
                         weights[j] = weights[j] - .01;
                     }
                 }
             }
         }
     }
-    if (all_correct == 1) { // keep going and adjusting weights until it gets them all correct
+    // keep going and adjusting weights until it gets them all correct
+    if (all_correct == 1) { 
         for (int i = 0; i < NUM_DATA_POINTS; i++) {
             printf("%f\n", weights[i]); // then print the weights
         }
@@ -188,17 +210,19 @@ void test_images(FILE *fp) {
     int length = ftell(fp);
     fseek(fp, pos, SEEK_SET);
     double data_fraction_of_file = 1 / 130.0; // 130 characters per image
-    double num_points = length * data_fraction_of_file; // number of images in the file
+    double num_points = length * data_fraction_of_file; // # images in file
     
     struct img *points = malloc(sizeof(struct img) * num_points);
 
     for (int i = 0; i < num_points; i++) {
         assert(fscanf(fp, "%d\n", &(num)) == 1);
         for (int j = 0; j < 8; j++) { // read in pixels in bitmap
-            assert(fscanf(fp, "%d %d %d %d %d %d %d %d\n", &(points[i].pix[(j*8)]), &(points[i].pix[(j*8)+1]),
-                                                           &(points[i].pix[(j*8)+2]), &(points[i].pix[(j*8)+3]),
-                                                           &(points[i].pix[(j*8)+4]), &(points[i].pix[(j*8)+5]),
-                                                           &(points[i].pix[(j*8)+6]), &(points[i].pix[(j*8)+7])) == 8);
+            assert(fscanf(fp, "%d %d %d %d %d %d %d %d\n", 
+                          &(points[i].pix[(j*8)]), &(points[i].pix[(j*8)+1]),
+                          &(points[i].pix[(j*8)+2]), &(points[i].pix[(j*8)+3]),
+                          &(points[i].pix[(j*8)+4]), &(points[i].pix[(j*8)+5]),
+                          &(points[i].pix[(j*8)+6]), &(points[i].pix[(j*8)+7]))
+                           == 8);
         }
     }
 
@@ -206,7 +230,7 @@ void test_images(FILE *fp) {
     for (int i = 0; i < NUM_DATA_POINTS; i++) { // read in weights
         fscanf(stdin, "%lf\n", &(weights[i]));
     }
-    find_directions_load(points, num_points, weights); // find and print directions
+    find_directions_load(points, num_points, weights); // find, print directions
     for (int i = 0; i < num_points; i++) {
         printf("%d, ", points[i].calculated_direction);
     }
@@ -217,10 +241,11 @@ void test_images(FILE *fp) {
 }
 
 /*
- * Based on given weights, set the calculated directions of a given set of images based
- * on their line scores
+ * Based on given weights, set the calculated directions of a given set of images
+ * based on their line scores
  */
-void find_directions_load (struct img *images, int num_points, double weights[NUM_DATA_POINTS])
+void find_directions_load (struct img *images, int num_points,
+                           double weights[NUM_DATA_POINTS])
 {
     set_img_scores(images, num_points, weights);
     

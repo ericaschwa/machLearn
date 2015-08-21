@@ -35,6 +35,7 @@ def make_election_data():
 		elections['state'] = row_values[0]
 		elections['year'] = int(row_values[1] - 3)
 		elections['result'] = int(row_values[2])
+		elections['prev'] = int(row_values[3])
 		elections_list.append(elections)
 
 		elections = OrderedDict()
@@ -42,6 +43,7 @@ def make_election_data():
 		elections['state'] = row_values[0]
 		elections['year'] = int(row_values[1] - 2)
 		elections['result'] = int(row_values[2])
+		elections['prev'] = int(row_values[3])
 		elections_list.append(elections)
 
 		elections = OrderedDict()
@@ -49,6 +51,7 @@ def make_election_data():
 		elections['state'] = row_values[0]
 		elections['year'] = int(row_values[1] - 1)
 		elections['result'] = int(row_values[2])
+		elections['prev'] = int(row_values[3])
 		elections_list.append(elections)
 
 		elections = OrderedDict()
@@ -56,11 +59,39 @@ def make_election_data():
 		elections['state'] = row_values[0]
 		elections['year'] = int(row_values[1])
 		elections['result'] = int(row_values[2])
+		elections['prev'] = int(row_values[3])
 		elections_list.append(elections)
 		
 	# Serialize the list of dicts to JSON
 	j = json.dumps(elections_list)
 	with open('electiondata.json', 'w') as f:
+	    	f.write(j)
+	f.closed
+
+# get the energy production results by state and year
+# source: http://www.eia.gov/electricity/data/state/
+def make_energy_data():
+	# Open the workbook
+	wb = xlrd.open_workbook('annual_generation_state.xls')
+	sh = wb.sheet_by_index(0)
+
+	elections_list = []
+
+	# Iterate through each row in worksheet and fetch values into dict
+	# add four years for each election result, since elections happen
+	# every four years
+	for rownum in range(1, sh.nrows):
+		elections = OrderedDict()
+		row_values = sh.row_values(rownum)
+		elections['state'] = row_values[0]
+		elections['year'] = int(row_values[1] - 3)
+		elections['result'] = int(row_values[2])
+		elections['prev'] = int(row_values[3])
+		elections_list.append(elections)
+		
+	# Serialize the list of dicts to JSON
+	j = json.dumps(elections_list)
+	with open('energydata.json', 'w') as f:
 	    	f.write(j)
 	f.closed
 
@@ -118,7 +149,8 @@ def combine_structures(elections, crimedata):
 							"larceny theft":		this['larceny theft'],
 							"vehicle theft":		this['vehicle theft'],
 							"state": 				elections[i]['state'],
-							"year": 				elections[i]['year']
+							"year": 				elections[i]['year'],
+							"prev":					elections[i]['prev']
 						}
 						data.append(dataPt)
 						break

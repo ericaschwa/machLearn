@@ -50,7 +50,7 @@ def calculate_averages():
 	averages = {"index":0.0, "violent":0.0, "property":0.0, "murder":0.0,
 			   "forcible rape":0.0, "robbery":0.0, "aggravated assault":0.0,
 	   			"burglary":0.0, "larceny theft":0.0, "vehicle theft":0.0,
-	   			"year":0.0}
+	   			"year":0.0, "prev":0.0}
 	for val in averages:
 		count = 0.0
 		score = 0.0
@@ -80,7 +80,7 @@ for x in range (0, len(data)):
 	weights = {"index":0.0, "violent":0.0, "property":0.0, "murder":0.0,
 			   "forcible rape":0.0, "robbery":0.0, "aggravated assault":0.0,
 	   			"burglary":0.0, "larceny theft":0.0, "vehicle theft":0.0,
-	   			"year":0.0}
+	   			"year":0.0, "prev":0.0}
 	averages = calculate_averages()
 	count = 0.1
 	start = time.time()

@@ -75,22 +75,65 @@ def make_energy_data():
 	wb = xlrd.open_workbook('annual_generation_state.xls')
 	sh = wb.sheet_by_index(0)
 
-	elections_list = []
+	energyData = []
 
 	# Iterate through each row in worksheet and fetch values into dict
 	# add four years for each election result, since elections happen
 	# every four years
 	for rownum in range(1, sh.nrows):
-		elections = OrderedDict()
+		energy = OrderedDict()
 		row_values = sh.row_values(rownum)
-		elections['state'] = row_values[0]
-		elections['year'] = int(row_values[1] - 3)
-		elections['result'] = int(row_values[2])
-		elections['prev'] = int(row_values[3])
-		elections_list.append(elections)
-		
+		energy['state'] = row_values[1]
+		energy['year'] = int(row_values[0])
+
+		energy['total'] = 0.0
+		energy['coal'] = 0.0
+		energy['hydro'] = 0.0
+		energy['natural gas'] = 0.0
+		energy['petroleum'] = 0.0
+		energy['wind'] = 0.0
+		energy['wood'] = 0.0
+		energy['nuclear'] = 0.0
+		energy['biomass'] = 0.0
+		energy['other gas'] = 0.0
+		energy['geothermal'] = 0.0
+		energy['pumped storage'] = 0.0
+		energy['solar'] = 0.0
+		energy['other'] = 0.0
+
+		if (row_values[3] == 'Total'):
+			energy['total'] = row_values[4]
+		elif (row_values[3] == 'Coal'):
+			energy['coal'] = row_values[4]
+		elif (row_values[3] == 'Hydroelectric Conventional'):
+			energy['hydro'] = row_values[4]
+		elif (row_values[3] == 'Natural Gas'):
+			energy['natural gas'] = row_values[4]
+		elif (row_values[3] == 'Petroleum'):
+			energy['petroleum'] = row_values[4]
+		elif (row_values[3] == 'Wind'):
+			energy['wind'] = row_values[4]
+		elif (row_values[3] == 'Wood and Wood Derived Fuels'):
+			energy['wood'] = row_values[4]
+		elif (row_values[3] == 'Nucelear'):
+			energy['nuclear'] = row_values[4]
+		elif (row_values[3] == 'Other Biomass'):
+			energy['biomass'] = row_values[4]
+		elif (row_values[3] == 'Other Gases'):
+			energy['other gas'] = row_values[4]
+		elif (row_values[3] == 'Geothermal'):
+			energy['geothermal'] = row_values[4]
+		elif (row_values[3] == 'Pumped Storage'):
+			energy['pumped storage'] = row_values[4]
+		elif (row_values[3] == 'Solar Thermal and Photovoltaic'):
+			energy['solar'] = row_values[4]
+		else:
+			energy['other'] = row_values[4]
+
+		energyData.append(energy)
+
 	# Serialize the list of dicts to JSON
-	j = json.dumps(elections_list)
+	j = json.dumps(energyData)
 	with open('energydata.json', 'w') as f:
 	    	f.write(j)
 	f.closed
@@ -161,6 +204,7 @@ def combine_structures(elections, crimedata):
 ###############################################################################
 
 make_election_data()
+make_energy_data()
 elections = get_election_data()
 crimedata = get_crime_data()
 data = combine_structures(elections, crimedata)

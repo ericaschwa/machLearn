@@ -29,7 +29,7 @@ def make_election_data():
 	# Iterate through each row in worksheet and fetch values into dict
 	# add four years for each election result, since elections happen
 	# every four years
-	for rownum in range(1, sh.nrows):
+	for rownum in range(0, sh.nrows):
 		elections = OrderedDict()
 		row_values = sh.row_values(rownum)
 		elections['state'] = row_values[0]
@@ -76,63 +76,76 @@ def make_energy_data():
 	sh = wb.sheet_by_index(0)
 
 	energyData = []
+	states  =  ['Alaska', 	   		'Alabama', 	   	'Arkansas',
+			  	'Arizona', 	   		'California',	'Colorado',
+			  	'Connecticut',   	'Delaware',		'Florida',
+			  	'Georgia',	   		'Hawaii',		'Iowa',
+			  	'Idaho',		   	'Illinois',	    'Indiana',
+			  	'Kansas',		   	'Kentucky',	    'Louisiana',
+			  	'Massachusetts', 	'Maryland',		'Maine',
+			  	'Michigan',	   		'Minnesota',	'Missouri',
+			  	'Mississippi',   	'Montana',	    'North Carolina',
+			  	'North Dakota',  	'Nebraska',	  	'New Hampshire',
+			  	'New Jersey',	 	'New Mexico',	'Nevada',
+			  	'New York',	   		'Ohio',			'Oklahoma',
+			  	'Oregon',		  	'Pennsylvania', 'Rhode Island',
+			  	'South Carolina',	'South Dakota', 'Tennessee',
+			  	'Texas',			'Utah',			'Virginia',
+			  	'Vermont',	   		'Washington',	'Wisconson',
+	 			'West Virginia', 	'Wyoming']
 
 	# Iterate through each row in worksheet and fetch values into dict
-	# add four years for each election result, since elections happen
-	# every four years
-	for rownum in range(1, sh.nrows):
-		energy = OrderedDict()
-		row_values = sh.row_values(rownum)
-		energy['state'] = row_values[1]
-		energy['year'] = int(row_values[0])
+	for year in range (1990, 2014):
+		for state in states:
+			# get data for each state in each year
+			energy = OrderedDict()
+			energy['state'] = state
+			energy['year'] = year
+			energy['coal'] = 0.0
+			energy['hydro'] = 0.0
+			energy['natural gas'] = 0.0
+			energy['petroleum'] = 0.0
+			energy['wind'] = 0.0
+			energy['wood'] = 0.0
+			energy['nuclear'] = 0.0
+			energy['biomass'] = 0.0
+			energy['other gas'] = 0.0
+			energy['geothermal'] = 0.0
+			energy['pumped storage'] = 0.0
+			energy['solar'] = 0.0
 
-		energy['total'] = 0.0
-		energy['coal'] = 0.0
-		energy['hydro'] = 0.0
-		energy['natural gas'] = 0.0
-		energy['petroleum'] = 0.0
-		energy['wind'] = 0.0
-		energy['wood'] = 0.0
-		energy['nuclear'] = 0.0
-		energy['biomass'] = 0.0
-		energy['other gas'] = 0.0
-		energy['geothermal'] = 0.0
-		energy['pumped storage'] = 0.0
-		energy['solar'] = 0.0
-		energy['other'] = 0.0
+			# get data for each type of energy
+			for rownum in range(0, sh.nrows):
+				row_values = sh.row_values(rownum)
+				if (row_values[1] == state and int(row_values[0]) == year):
+					if (row_values[3] == 'Coal'):
+						energy['coal'] += row_values[4]
+					elif (row_values[3] == 'Hydroelectric Conventional'):
+						energy['hydro'] += row_values[4]
+					elif (row_values[3] == 'Natural Gas'):
+						energy['natural gas'] += row_values[4]
+					elif (row_values[3] == 'Petroleum'):
+						energy['petroleum'] += row_values[4]
+					elif (row_values[3] == 'Wind'):
+						energy['wind'] += row_values[4]
+					elif (row_values[3] == 'Wood and Wood Derived Fuels'):
+						energy['wood'] += row_values[4]
+					elif (row_values[3] == 'Nucelear'):
+						energy['nuclear'] += row_values[4]
+					elif (row_values[3] == 'Other Biomass'):
+						energy['biomass'] += row_values[4]
+					elif (row_values[3] == 'Other Gases'):
+						energy['other gas'] += row_values[4]
+					elif (row_values[3] == 'Geothermal'):
+						energy['geothermal'] += row_values[4]
+					elif (row_values[3] == 'Pumped Storage'):
+						energy['pumped storage'] += row_values[4]
+					elif (row_values[3] == 'Solar Thermal and Photovoltaic'):
+						energy['solar'] += row_values[4]
 
-		if (row_values[3] == 'Total'):
-			energy['total'] = row_values[4]
-		elif (row_values[3] == 'Coal'):
-			energy['coal'] = row_values[4]
-		elif (row_values[3] == 'Hydroelectric Conventional'):
-			energy['hydro'] = row_values[4]
-		elif (row_values[3] == 'Natural Gas'):
-			energy['natural gas'] = row_values[4]
-		elif (row_values[3] == 'Petroleum'):
-			energy['petroleum'] = row_values[4]
-		elif (row_values[3] == 'Wind'):
-			energy['wind'] = row_values[4]
-		elif (row_values[3] == 'Wood and Wood Derived Fuels'):
-			energy['wood'] = row_values[4]
-		elif (row_values[3] == 'Nucelear'):
-			energy['nuclear'] = row_values[4]
-		elif (row_values[3] == 'Other Biomass'):
-			energy['biomass'] = row_values[4]
-		elif (row_values[3] == 'Other Gases'):
-			energy['other gas'] = row_values[4]
-		elif (row_values[3] == 'Geothermal'):
-			energy['geothermal'] = row_values[4]
-		elif (row_values[3] == 'Pumped Storage'):
-			energy['pumped storage'] = row_values[4]
-		elif (row_values[3] == 'Solar Thermal and Photovoltaic'):
-			energy['solar'] = row_values[4]
-		else:
-			energy['other'] = row_values[4]
-
-		energyData.append(energy)
-
-	# Serialize the list of dicts to JSON
+			energyData.append(energy)
+	
+	#Serialize the list of dicts to JSON
 	j = json.dumps(energyData)
 	with open('energydata.json', 'w') as f:
 	    	f.write(j)

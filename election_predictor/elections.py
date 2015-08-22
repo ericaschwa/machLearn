@@ -8,7 +8,7 @@
 #	Used crime data because that was the data available to me.				  #
 #																			  #
 #		Accuracy: 0.581837381204 without energy data 						  #
-#				  0.700831024931 with energy data							  #
+#				  0.716528162512 with energy data							  #
 # 		Accuracy values and significance of the difference between these	  #
 #			values and a 50% accuracy (guessing)							  #
 #			P value and statistical significance: 							  #
@@ -77,13 +77,11 @@ with open('data.json', 'r') as f:
     data = json.loads(read_data)
 f.closed
 
-wrong_results = []
 num_correct_test = 0.0
 count_test = 0.1
 for x in range (0, len(data)):
 	#adjust weights until reaching certain standard for accuracy
 	#(stastistical significance or a time limit)
-	num_correct = 0.0
 	weights = {
 		"index":0.0,			  "violent":0.0, 		 "property":0.0,
 		"murder":0.0,			  "forcible rape":0.0, 	 "robbery":0.0,
@@ -95,32 +93,23 @@ for x in range (0, len(data)):
 		"geothermal": 0.0, 		  "pumped storage": 0.0, "solar": 0.0
 	}
 	averages = calculate_averages()
-	count = 0.1
 	start = time.time()
 	end = time.time()
 
-	while ((num_correct/count < 0.95) and (end-start < .5)):
+	while (end-start < .5): # only give each data item .5 seconds
+	#(otherwise it takes way too long)
 		for i in range (0, len(data)):
 			if (i != x):
 				data[i] = set_score(data[i])
 				if ((data[i]['score']  > 0.0 and data[i]['result'] == 0) or
 					(data[i]['score'] <= 0.0 and data[i]['result'] == 1)):
 					adjust_weights(data[i], weights, averages)
-				else:
-					num_correct += 1.0
-				count += 1.0
-				# gets rid of the .1 at the end of count
-				# which was originally there to avoid division by 0
-				if (count == 1.1): 
-					count = 1.0
 		end = time.time()
 
 	#now, decide for test data: set scores, measure accuracy of guesses
 	data[x] = set_score(data[x])
-	if ((data[x]['score']  > 0.0 and data[x]['result'] == 0) or
-		(data[x]['score'] <= 0.0 and data[x]['result'] == 1)):
-		wrong_results.append(data[x]['result'])
-	else:
+	if (not((data[x]['score']  > 0.0 and data[x]['result'] == 0) or
+			(data[x]['score'] <= 0.0 and data[x]['result'] == 1))):
 		num_correct_test += 1.0
 	count_test += 1.0
 	# gets rid of the .1 at the end of count

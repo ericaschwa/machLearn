@@ -7,7 +7,8 @@
 #																			  #
 #	Used crime data because that was the data available to me.				  #
 #																			  #
-#		Accuracy: 0.581837381204											  #
+#		Accuracy: 0.581837381204 without energy data 						  #
+#				  0.700831024931 with energy data							  #
 # 		Accuracy values and significance of the difference between these	  #
 #			values and a 50% accuracy (guessing)							  #
 #			P value and statistical significance: 							  #
@@ -47,10 +48,16 @@ def set_score (data):
 
 #calculate averages of different values
 def calculate_averages():
-	averages = {"index":0.0, "violent":0.0, "property":0.0, "murder":0.0,
-			   "forcible rape":0.0, "robbery":0.0, "aggravated assault":0.0,
-	   			"burglary":0.0, "larceny theft":0.0, "vehicle theft":0.0,
-	   			"year":0.0, "prev":0.0}
+	averages = {
+		"index":0.0,			  "violent":0.0, 		 "property":0.0,
+		"murder":0.0,			  "forcible rape":0.0, 	 "robbery":0.0,
+		"aggravated assault":0.0, "burglary":0.0, 		 "larceny theft":0.0,
+		"vehicle theft":0.0, 	  "year":0.0, 			 "prev":0.0,
+		"coal": 0.0, 			  "hydro": 0.0, 		 "natural gas": 0.0,
+		"petroleum": 0.0, 		  "wind": 0.0, 			 "wood":	0.0,
+		"nuclear": 0.0, 		  "biomass": 0.0,		 "other gas": 0.0,
+		"geothermal": 0.0, 		  "pumped storage": 0.0, "solar": 0.0
+	}
 	for val in averages:
 		count = 0.0
 		score = 0.0
@@ -77,10 +84,16 @@ for x in range (0, len(data)):
 	#adjust weights until reaching certain standard for accuracy
 	#(stastistical significance or a time limit)
 	num_correct = 0.0
-	weights = {"index":0.0, "violent":0.0, "property":0.0, "murder":0.0,
-			   "forcible rape":0.0, "robbery":0.0, "aggravated assault":0.0,
-	   			"burglary":0.0, "larceny theft":0.0, "vehicle theft":0.0,
-	   			"year":0.0, "prev":0.0}
+	weights = {
+		"index":0.0,			  "violent":0.0, 		 "property":0.0,
+		"murder":0.0,			  "forcible rape":0.0, 	 "robbery":0.0,
+		"aggravated assault":0.0, "burglary":0.0, 		 "larceny theft":0.0,
+		"vehicle theft":0.0, 	  "year":0.0, 			 "prev":0.0,
+		"coal": 0.0, 			  "hydro": 0.0, 		 "natural gas": 0.0,
+		"petroleum": 0.0, 		  "wind": 0.0, 			 "wood":	0.0,
+		"nuclear": 0.0, 		  "biomass": 0.0,		 "other gas": 0.0,
+		"geothermal": 0.0, 		  "pumped storage": 0.0, "solar": 0.0
+	}
 	averages = calculate_averages()
 	count = 0.1
 	start = time.time()

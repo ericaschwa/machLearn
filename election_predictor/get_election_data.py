@@ -151,14 +151,6 @@ def make_energy_data():
 	    	f.write(j)
 	f.closed
 
-# get financial data for each state by year, from excel files
-# http://www.census.gov/prod/2011pubs/11statab/stlocgov.pdf
-# http://www.census.gov/compendia/statab/2011/2011edition.html
-# http://www.census.gov/compendia/statab/cats/state_local_govt_finances_employment/state_government_finances.html
-# files in downloads folder
-def make_state_data():
-	return 0
-
 # get election data by state and year
 def get_election_data():
 	#open file containing data json
@@ -167,6 +159,16 @@ def get_election_data():
 	     electiondata = json.loads(read_data)
 	f.closed
 	return electiondata
+
+# get energy data by state and year
+def get_energy_data():
+	#open file containing data json
+	# to use file that includes the test data
+	with open('energydata.json', 'r') as f:
+	     read_data = f.read()
+	     energyData = json.loads(read_data)
+	f.closed
+	return energyData
 
 # get crime data by state and year
 def get_crime_data():
@@ -179,7 +181,7 @@ def get_crime_data():
 	return crimedata
 
 # combines the election data and the crime data into one structure
-def combine_structures(elections, crimedata):
+def combine_crimes(elections, crimedata):
 	data = []
 	for x in range(0, len(crimedata)): # for each state
 	 	# for each year in the state
@@ -212,6 +214,48 @@ def combine_structures(elections, crimedata):
 						break
 	return data
 
+# combines the energy data and the election/crime data into one structure
+def combine_energy(crimedata, energyData):
+	data = []
+	for x in range(0, len(crimedata)): # for each state
+		if (crimedata[x]['year'] >= 1990 and crimedata[x]['year'] <= 2012):
+			for i in range(0,len(energyData)):
+				if (energyData[i]['state'] == crimedata[x]['state'] and
+					energyData[i]['year'] == crimedata[x]['year']):
+					crime = crimedata[x]
+					energy = energyData[i]
+					dataPt = {
+						"result": 				crime['result'],
+						"index":				crime['index'],
+						"violent":				crime['violent'],
+						"property":				crime['property'],
+						"murder":				crime['murder'],
+						"forcible rape":		crime['forcible rape'],
+						"robbery":				crime['robbery'],
+						"aggravated assault": 	crime['aggravated assault'],
+						"burglary":				crime['burglary'],
+						"larceny theft":		crime['larceny theft'],
+						"vehicle theft":		crime['vehicle theft'],
+						"state": 				crime['state'],
+						"year": 				crime['year'],
+						"prev":					crime['prev'],
+						"coal":					energy['coal'],
+						"hydro":				energy['hydro'],
+						"natural gas":			energy['natural gas'],
+						"petroleum":			energy['petroleum'],
+						"wind":					energy['wind'],
+						"wood":					energy['wood'],
+						"nuclear":				energy['nuclear'],
+						"biomass":				energy['biomass'],
+						"other gas":			energy['other gas'],
+						"geothermal":			energy['geothermal'],
+						"pumped storage":		energy['pumped storage'],
+						"solar":				energy['solar']
+					}
+					data.append(dataPt)
+					break
+	return data
+
 ###############################################################################
 #									MAIN									  #
 ###############################################################################
@@ -219,8 +263,10 @@ def combine_structures(elections, crimedata):
 make_election_data()
 make_energy_data()
 elections = get_election_data()
+energyData = get_energy_data()
 crimedata = get_crime_data()
-data = combine_structures(elections, crimedata)
+data = combine_crimes(elections, crimedata)
+data = combine_energy(data, energyData)
 j = json.dumps(data)
 with open('data.json', 'w') as f:
 	    	f.write(j)

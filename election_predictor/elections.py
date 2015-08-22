@@ -96,7 +96,9 @@ for x in range (0, len(data)):
 	start = time.time()
 	end = time.time()
 
-	while (end-start < .5): # only give each data item .5 seconds
+	while (end-start < .5): # only give each data item .5 seconds, or 1 second
+	# .5 gives an accuracy of 0.716528162512, while 1 gives an accuracy of 0.713758079409
+	# conclusion: just stick with .5
 	#(otherwise it takes way too long)
 		for i in range (0, len(data)):
 			if (i != x):

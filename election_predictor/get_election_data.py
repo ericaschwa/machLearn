@@ -149,6 +149,8 @@ def make_energy_data():
 	    	f.write(j)
 	f.closed
 
+# get the median income in 2013 by state and year
+# source: https://www.census.gov/hhes/www/income/data/statemedian/
 def make_income_data():
 	# Open the workbook
 	wb = xlrd.open_workbook('income.xls')
@@ -159,7 +161,7 @@ def make_income_data():
 	# Iterate through each row in worksheet and fetch values into dict
 	for rownum in range(0, sh.nrows):
 		row_values = sh.row_values(rownum)
-		for colnum in range(0, 23)
+		for colnum in range(0, 24):
 			data = OrderedDict()
 			data['state'] = row_values[0]
 			data['year'] = 2013 - colnum
@@ -167,7 +169,6 @@ def make_income_data():
 			data['income stderr'] = row_values[2 * colnum + 2]
 			incomeData.append(data)
 	
-	print incomeData
 	#Serialize the list of dicts to JSON
 	j = json.dumps(incomeData)
 	with open('incomedata.json', 'w') as f:
@@ -192,6 +193,16 @@ def get_energy_data():
 	     energyData = json.loads(read_data)
 	f.closed
 	return energyData
+
+# get income data by state and year
+def get_income_data():
+	#open file containing data json
+	# to use file that includes the test data
+	with open('incomedata.json', 'r') as f:
+	     read_data = f.read()
+	     incomeData = json.loads(read_data)
+	f.closed
+	return incomeData
 
 # get crime data by state and year
 def get_crime_data():
@@ -279,17 +290,24 @@ def combine_energy(crimedata, energyData):
 					break
 	return data
 
+# combines the income data and the election/energy/crime data into one structure
+def combine_income(crimedata, incomeData):
+	return crimedata
+
 ###############################################################################
 #									MAIN									  #
 ###############################################################################
 
 make_election_data()
 make_energy_data()
+make_income_data()
 elections = get_election_data()
 energyData = get_energy_data()
+incomeData = get_income_data()
 crimedata = get_crime_data()
 data = combine_crimes(elections, crimedata)
 data = combine_energy(data, energyData)
+data = combine_income(data, incomeData)
 j = json.dumps(data)
 with open('data.json', 'w') as f:
 	    	f.write(j)

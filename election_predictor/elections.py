@@ -49,14 +49,14 @@ def set_score (data):
 #calculate averages of different values
 def calculate_averages():
 	averages = {
-		"index":0.0,			  "violent":0.0, 		 "property":0.0,
-		"murder":0.0,			  "forcible rape":0.0, 	 "robbery":0.0,
-		"aggravated assault":0.0, "burglary":0.0, 		 "larceny theft":0.0,
-		"vehicle theft":0.0, 	  "year":0.0, 			 "prev":0.0,
-		"coal": 0.0, 			  "hydro": 0.0, 		 "natural gas": 0.0,
-		"petroleum": 0.0, 		  "wind": 0.0, 			 "wood":	0.0,
-		"nuclear": 0.0, 		  "biomass": 0.0,		 "other gas": 0.0,
-		"geothermal": 0.0, 		  "pumped storage": 0.0, "solar": 0.0
+		"index":0.0,		   "violent":0.0, 		 	   "property":0.0,
+		"murder":0.0,		   "forcible rape":0.0, 	   "robbery":0.0,
+		"burglary":0.0,		   "aggravated assault":0.0,   "larceny theft":0.0,
+		"vehicle theft":0.0,   "year":0.0, 				   "prev":0.0,
+		"coal":0.0, 		   "hydro":0.0, 			   "natural gas":0.0,
+		"petroleum":0.0, 	   "wind":0.0, 				   "wood":0.0,
+		"nuclear":0.0, 		   "biomass":0.0,		 	   "other gas": 0.0,
+		"geothermal":0.0, 	   "pumped storage":0.0,	   "solar":0.0
 	}
 	for val in averages:
 		count = 0.0
@@ -83,21 +83,22 @@ for x in range (0, len(data)):
 	#adjust weights until reaching certain standard for accuracy
 	#(stastistical significance or a time limit)
 	weights = {
-		"index":0.0,			  "violent":0.0, 		 "property":0.0,
-		"murder":0.0,			  "forcible rape":0.0, 	 "robbery":0.0,
-		"aggravated assault":0.0, "burglary":0.0, 		 "larceny theft":0.0,
-		"vehicle theft":0.0, 	  "year":0.0, 			 "prev":0.0,
-		"coal": 0.0, 			  "hydro": 0.0, 		 "natural gas": 0.0,
-		"petroleum": 0.0, 		  "wind": 0.0, 			 "wood":	0.0,
-		"nuclear": 0.0, 		  "biomass": 0.0,		 "other gas": 0.0,
-		"geothermal": 0.0, 		  "pumped storage": 0.0, "solar": 0.0
+		"index":0.0,		   "violent":0.0, 		 	   "property":0.0,
+		"murder":0.0,		   "forcible rape":0.0, 	   "robbery":0.0,
+		"burglary":0.0,		   "aggravated assault":0.0,   "larceny theft":0.0,
+		"vehicle theft":0.0,   "year":0.0, 				   "prev":0.0,
+		"coal":0.0, 		   "hydro":0.0, 			   "natural gas":0.0,
+		"petroleum":0.0, 	   "wind":0.0, 				   "wood":0.0,
+		"nuclear":0.0, 		   "biomass":0.0,		 	   "other gas": 0.0,
+		"geothermal":0.0, 	   "pumped storage":0.0,	   "solar":0.0
 	}
 	averages = calculate_averages()
 	start = time.time()
 	end = time.time()
 
 	while (end-start < .5): # only give each data item .5 seconds, or 1 second
-	# .5 gives an accuracy of 0.716528162512, while 1 gives an accuracy of 0.713758079409
+	# .5 gives an accuracy of 0.716528162512,
+	# while 1 gives an accuracy of 0.713758079409
 	# conclusion: just stick with .5
 	#(otherwise it takes way too long)
 		for i in range (0, len(data)):

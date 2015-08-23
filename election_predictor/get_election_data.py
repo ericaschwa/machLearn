@@ -76,23 +76,23 @@ def make_energy_data():
 	sh = wb.sheet_by_index(0)
 
 	energyData = []
-	states  =  ['Alaska', 	   		'Alabama', 	   	'Arkansas',
-			  	'Arizona', 	   		'California',	'Colorado',
-			  	'Connecticut',   	'Delaware',		'Florida',
-			  	'Georgia',	   		'Hawaii',		'Iowa',
-			  	'Idaho',		   	'Illinois',	    'Indiana',
-			  	'Kansas',		   	'Kentucky',	    'Louisiana',
-			  	'Massachusetts', 	'Maryland',		'Maine',
-			  	'Michigan',	   		'Minnesota',	'Missouri',
-			  	'Mississippi',   	'Montana',	    'North Carolina',
-			  	'North Dakota',  	'Nebraska',	  	'New Hampshire',
-			  	'New Jersey',	 	'New Mexico',	'Nevada',
-			  	'New York',	   		'Ohio',			'Oklahoma',
-			  	'Oregon',		  	'Pennsylvania', 'Rhode Island',
-			  	'South Carolina',	'South Dakota', 'Tennessee',
-			  	'Texas',			'Utah',			'Virginia',
-			  	'Vermont',	   		'Washington',	'Wisconson',
-	 			'West Virginia', 	'Wyoming']
+	states  =  ['Alaska', 	   			'Alabama', 	   		'Arkansas',
+			  	'Arizona', 	   			'California',		'Colorado',
+			  	'Connecticut',   		'Delaware',			'Florida',
+			  	'Georgia',	   			'Hawaii',			'Iowa',
+			  	'Idaho',		   		'Illinois',	   		'Indiana',
+			  	'Kansas',		   		'Kentucky',	   		'Louisiana',
+			  	'Massachusetts', 		'Maryland',			'Maine',
+			  	'Michigan',	   			'Minnesota',		'Missouri',
+			  	'Mississippi',   		'Montana',	   		'North Carolina',
+			  	'North Dakota',  		'Nebraska',	  		'New Hampshire',
+			  	'New Jersey',	 		'New Mexico',		'Nevada',
+			  	'New York',	   			'Ohio',				'Oklahoma',
+			  	'Oregon',		  		'Pennsylvania',		'Rhode Island',
+			  	'South Carolina',		'South Dakota',		'Tennessee',
+			  	'Texas',				'Utah',				'Virginia',
+			  	'Vermont',	   			'Washington',		'Wisconson',
+	 			'West Virginia', 		'Wyoming']
 
 	# Iterate through each row in worksheet and fetch values into dict
 	for year in range (1990, 2014):

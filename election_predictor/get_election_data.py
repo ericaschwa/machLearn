@@ -76,23 +76,21 @@ def make_energy_data():
 	sh = wb.sheet_by_index(0)
 
 	energyData = []
-	states  =  ['Alaska', 	   			'Alabama', 	   		'Arkansas',
-			  	'Arizona', 	   			'California',		'Colorado',
-			  	'Connecticut',   		'Delaware',			'Florida',
-			  	'Georgia',	   			'Hawaii',			'Iowa',
-			  	'Idaho',		   		'Illinois',	   		'Indiana',
-			  	'Kansas',		   		'Kentucky',	   		'Louisiana',
-			  	'Massachusetts', 		'Maryland',			'Maine',
-			  	'Michigan',	   			'Minnesota',		'Missouri',
-			  	'Mississippi',   		'Montana',	   		'North Carolina',
-			  	'North Dakota',  		'Nebraska',	  		'New Hampshire',
-			  	'New Jersey',	 		'New Mexico',		'Nevada',
-			  	'New York',	   			'Ohio',				'Oklahoma',
-			  	'Oregon',		  		'Pennsylvania',		'Rhode Island',
-			  	'South Carolina',		'South Dakota',		'Tennessee',
-			  	'Texas',				'Utah',				'Virginia',
-			  	'Vermont',	   			'Washington',		'Wisconson',
-	 			'West Virginia', 		'Wyoming']
+	states  =  [
+		'Alaska', 	   	 'Alabama', 	  'Arkansas',		'Arizona',
+		'California',	 'Colorado',	  'Connecticut',    'Delaware',
+		'Florida',		 'Georgia',	   	  'Hawaii',		    'Iowa',
+		'Idaho',		 'Illinois',	  'Indiana',		'Kansas',
+		'Kentucky',	   	 'Louisiana',	  'Massachusetts',  'Maryland',
+		'Maine',		 'Michigan',	  'Minnesota',	    'Missouri',
+		'Mississippi',   'Montana',	   	  'North Carolina', 'North Dakota',
+		'Nebraska',	  	 'New Hampshire', 'New Jersey',	    'New Mexico',
+		'Nevada',		 'New York',	  'Ohio',			'Oklahoma',
+		'Oregon',		 'Pennsylvania',  'Rhode Island',	'South Carolina',
+		'South Dakota',	 'Tennessee',	  'Texas',		    'Utah',
+		'Virginia',		 'Vermont',	   	  'Washington',	    'Wisconson',
+	 	'West Virginia', 'Wyoming'
+	]
 
 	# Iterate through each row in worksheet and fetch values into dict
 	for year in range (1990, 2014):
@@ -148,6 +146,31 @@ def make_energy_data():
 	#Serialize the list of dicts to JSON
 	j = json.dumps(energyData)
 	with open('energydata.json', 'w') as f:
+	    	f.write(j)
+	f.closed
+
+def make_income_data():
+	# Open the workbook
+	wb = xlrd.open_workbook('income.xls')
+	sh = wb.sheet_by_index(0)
+
+	incomeData = []
+
+	# Iterate through each row in worksheet and fetch values into dict
+	for rownum in range(0, sh.nrows):
+		row_values = sh.row_values(rownum)
+		for colnum in range(0, 23)
+			data = OrderedDict()
+			data['state'] = row_values[0]
+			data['year'] = 2013 - colnum
+			data['income'] = row_values[2 * colnum + 1]
+			data['income stderr'] = row_values[2 * colnum + 2]
+			incomeData.append(data)
+	
+	print incomeData
+	#Serialize the list of dicts to JSON
+	j = json.dumps(incomeData)
+	with open('incomedata.json', 'w') as f:
 	    	f.write(j)
 	f.closed
 

@@ -326,7 +326,7 @@ def combine_income(crimedata, incomeData):
 					"geothermal":			crime['geothermal'],
 					"pumped storage":		crime['pumped storage'],
 					"solar":				crime['solar'],
-					"income":				income['income'],
+					#"income":				income['income']
 					"income stderr":		income['income stderr']
 				}
 				data.append(dataPt)

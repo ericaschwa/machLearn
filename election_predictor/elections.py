@@ -9,6 +9,8 @@
 #																			  #
 #		Accuracy: 0.581837381204 without energy data 						  #
 #				  0.716528162512 with energy data							  #
+#				  0.709141274238 with income data 							  #
+#				  0.736842105263 with just income stderr 					  #
 # 		Accuracy values and significance of the difference between these	  #
 #			values and a 50% accuracy (guessing)							  #
 #			P value and statistical significance: 							  #
@@ -56,7 +58,8 @@ def calculate_averages():
 		"coal":0.0, 		   "hydro":0.0, 			   "natural gas":0.0,
 		"petroleum":0.0, 	   "wind":0.0, 				   "wood":0.0,
 		"nuclear":0.0, 		   "biomass":0.0,		 	   "other gas": 0.0,
-		"geothermal":0.0, 	   "pumped storage":0.0,	   "solar":0.0
+		"geothermal":0.0, 	   "pumped storage":0.0,	   "solar":0.0,
+		"income stderr":0.0
 	}
 	for val in averages:
 		count = 0.0
@@ -80,8 +83,7 @@ f.closed
 num_correct_test = 0.0
 count_test = 0.1
 for x in range (0, len(data)):
-	#adjust weights until reaching certain standard for accuracy
-	#(stastistical significance or a time limit)
+	#adjust weights until reaching certain time limit
 	weights = {
 		"index":0.0,		   "violent":0.0, 		 	   "property":0.0,
 		"murder":0.0,		   "forcible rape":0.0, 	   "robbery":0.0,
@@ -90,17 +92,17 @@ for x in range (0, len(data)):
 		"coal":0.0, 		   "hydro":0.0, 			   "natural gas":0.0,
 		"petroleum":0.0, 	   "wind":0.0, 				   "wood":0.0,
 		"nuclear":0.0, 		   "biomass":0.0,		 	   "other gas": 0.0,
-		"geothermal":0.0, 	   "pumped storage":0.0,	   "solar":0.0
+		"geothermal":0.0, 	   "pumped storage":0.0,	   "solar":0.0,
+		"income stderr":0.0
 	}
 	averages = calculate_averages()
 	start = time.time()
 	end = time.time()
 
 	while (end-start < .5): # only give each data item .5 seconds, or 1 second
+	# measurements made before addition of income data:
 	# .5 gives an accuracy of 0.716528162512,
 	# while 1 gives an accuracy of 0.713758079409
-	# conclusion: just stick with .5
-	#(otherwise it takes way too long)
 		for i in range (0, len(data)):
 			if (i != x):
 				data[i] = set_score(data[i])

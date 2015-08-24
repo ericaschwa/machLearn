@@ -123,3 +123,4 @@ for x in range (0, len(data)):
 		count_test = 1.0
 
 print num_correct_test / count_test
+print weights

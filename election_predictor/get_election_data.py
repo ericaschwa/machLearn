@@ -292,7 +292,46 @@ def combine_energy(crimedata, energyData):
 
 # combines the income data and the election/energy/crime data into one structure
 def combine_income(crimedata, incomeData):
-	return crimedata
+	data = []
+	for x in range(0, len(crimedata)): # for each state
+		for i in range(0,len(incomeData)):
+			if (incomeData[i]['state'] == crimedata[x]['state'] and
+				incomeData[i]['year'] == crimedata[x]['year']):
+				crime = crimedata[x]
+				income = incomeData[i]
+				dataPt = {
+					"result": 				crime['result'],
+					"index":				crime['index'],
+					"violent":				crime['violent'],
+					"property":				crime['property'],
+					"murder":				crime['murder'],
+					"forcible rape":		crime['forcible rape'],
+					"robbery":				crime['robbery'],
+					"aggravated assault": 	crime['aggravated assault'],
+					"burglary":				crime['burglary'],
+					"larceny theft":		crime['larceny theft'],
+					"vehicle theft":		crime['vehicle theft'],
+					"state": 				crime['state'],
+					"year": 				crime['year'],
+					"prev":					crime['prev'],
+					"coal":					crime['coal'],
+					"hydro":				crime['hydro'],
+					"natural gas":			crime['natural gas'],
+					"petroleum":			crime['petroleum'],
+					"wind":					crime['wind'],
+					"wood":					crime['wood'],
+					"nuclear":				crime['nuclear'],
+					"biomass":				crime['biomass'],
+					"other gas":			crime['other gas'],
+					"geothermal":			crime['geothermal'],
+					"pumped storage":		crime['pumped storage'],
+					"solar":				crime['solar'],
+					"income":				income['income'],
+					"income stderr":		income['income stderr']
+				}
+				data.append(dataPt)
+				break
+	return data
 
 ###############################################################################
 #									MAIN									  #

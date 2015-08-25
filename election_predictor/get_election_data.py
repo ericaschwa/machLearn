@@ -227,7 +227,7 @@ def get_income_data():
 	f.closed
 	return incomeData
 
-# get 1900s population data by state
+# get 1900 population data by state
 def get_popchange_data():
 	#open file containing data json
 	# to use file that includes the test data (accuracy: 0.962962962963)
@@ -369,7 +369,7 @@ def combine_income(crimedata, incomeData):
 				break
 	return data
 
-# combines the 1900s population data (will be used to calculate population
+# combines the 1900 population data (will be used to calculate population
 # change) and the election/income/energy/crime data into one structure
 def combine_1900pop(crimedata, popdata):
 	for data in crimedata:

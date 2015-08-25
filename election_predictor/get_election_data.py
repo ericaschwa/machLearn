@@ -175,6 +175,29 @@ def make_income_data():
 	    	f.write(j)
 	f.closed
 
+# get the 1900 population in each state
+# source: http://www.census.gov/popest/data/historical/1990s/index.html
+def make_popchange_data():
+	# Open the workbook
+	wb = xlrd.open_workbook('1900_populations.xlsx')
+	sh = wb.sheet_by_index(0)
+
+	popData = []
+
+	# Iterate through each row in worksheet and fetch values into dict
+	for rownum in range(0, sh.nrows):
+		row_values = sh.row_values(rownum)
+		data = OrderedDict()
+		data['state'] = row_values[0]
+		data['1900 pop'] = row_values[1]
+		popData.append(data)
+	
+	#Serialize the list of dicts to JSON
+	j = json.dumps(popData)
+	with open('populationdata.json', 'w') as f:
+	    	f.write(j)
+	f.closed
+
 # get election data by state and year
 def get_election_data():
 	#open file containing data json
@@ -203,6 +226,16 @@ def get_income_data():
 	     incomeData = json.loads(read_data)
 	f.closed
 	return incomeData
+
+# get 1900s population data by state
+def get_popchange_data():
+	#open file containing data json
+	# to use file that includes the test data (accuracy: 0.962962962963)
+	with open('populationdata.json', 'r') as f:
+	     read_data = f.read()
+	     popdata = json.loads(read_data)
+	f.closed
+	return popdata
 
 # get crime data by state and year
 def get_crime_data():
@@ -240,6 +273,7 @@ def combine_crimes(elections, crimedata):
 							"burglary":				this['burglary'],
 							"larceny theft":		this['larceny theft'],
 							"vehicle theft":		this['vehicle theft'],
+							"population":			this['population'],
 							"state": 				elections[i]['state'],
 							"year": 				elections[i]['year'],
 							"prev":					elections[i]['prev']
@@ -270,6 +304,7 @@ def combine_energy(crimedata, energyData):
 						"burglary":				crime['burglary'],
 						"larceny theft":		crime['larceny theft'],
 						"vehicle theft":		crime['vehicle theft'],
+						"population":			crime['population'],
 						"state": 				crime['state'],
 						"year": 				crime['year'],
 						"prev":					crime['prev'],
@@ -311,6 +346,7 @@ def combine_income(crimedata, incomeData):
 					"burglary":				crime['burglary'],
 					"larceny theft":		crime['larceny theft'],
 					"vehicle theft":		crime['vehicle theft'],
+					"population":			crime['population'],
 					"state": 				crime['state'],
 					"year": 				crime['year'],
 					"prev":					crime['prev'],
@@ -333,6 +369,15 @@ def combine_income(crimedata, incomeData):
 				break
 	return data
 
+# combines the 1900s population data (will be used to calculate population
+# change) and the election/income/energy/crime data into one structure
+def combine_1900pop(crimedata, popdata):
+	for data in crimedata:
+		for state in popdata:
+			if (data['state'] == state['state']):
+				data['pop change'] = (data['population'] - state['1900 pop'])/state['1900 pop']
+	return crimedata
+
 ###############################################################################
 #									MAIN									  #
 ###############################################################################
@@ -340,13 +385,16 @@ def combine_income(crimedata, incomeData):
 make_election_data()
 make_energy_data()
 make_income_data()
+make_popchange_data()
 elections = get_election_data()
 energyData = get_energy_data()
 incomeData = get_income_data()
 crimedata = get_crime_data()
+popData = get_popchange_data()
 data = combine_crimes(elections, crimedata)
 data = combine_energy(data, energyData)
 data = combine_income(data, incomeData)
+data = combine_1900pop(data, popData)
 j = json.dumps(data)
 with open('data.json', 'w') as f:
 	    	f.write(j)

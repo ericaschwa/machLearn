@@ -395,6 +395,7 @@ data = combine_crimes(elections, crimedata)
 data = combine_energy(data, energyData)
 data = combine_income(data, incomeData)
 data = combine_1900pop(data, popData)
+#http://www.dol.gov/whd/state/stateMinWageHis.htm
 j = json.dumps(data)
 with open('data.json', 'w') as f:
 	    	f.write(j)

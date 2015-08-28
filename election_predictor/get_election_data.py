@@ -198,6 +198,30 @@ def make_popchange_data():
 	    	f.write(j)
 	f.closed
 
+# get the minimum wage in each state by year
+# source: http://www.dol.gov/whd/state/stateMinWageHis.htm
+def make_minwage_data():
+	# Open the workbook
+	wb = xlrd.open_workbook('minwages.xlsx')
+	sh = wb.sheet_by_index(0)
+
+	minwageData = []
+
+	# Iterate through each row in worksheet and fetch values into dict
+	for rownum in range(0, sh.nrows):
+		for colnum in range(0, 24):
+			row_values = sh.row_values(rownum)
+			data = OrderedDict()
+			data['state'] = row_values[0]
+			data['min wage'] = row_values[colnum + 1]
+			minwageData.append(data)
+	
+	#Serialize the list of dicts to JSON
+	j = json.dumps(minwageData)
+	with open('minwagedata.json', 'w') as f:
+	    	f.write(j)
+	f.closed
+
 # get election data by state and year
 def get_election_data():
 	#open file containing data json
@@ -386,6 +410,7 @@ make_election_data()
 make_energy_data()
 make_income_data()
 make_popchange_data()
+make_minwage_data()
 elections = get_election_data()
 energyData = get_energy_data()
 incomeData = get_income_data()
@@ -395,7 +420,7 @@ data = combine_crimes(elections, crimedata)
 data = combine_energy(data, energyData)
 data = combine_income(data, incomeData)
 data = combine_1900pop(data, popData)
-#http://www.dol.gov/whd/state/stateMinWageHis.htm
+
 j = json.dumps(data)
 with open('data.json', 'w') as f:
 	    	f.write(j)

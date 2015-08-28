@@ -213,6 +213,7 @@ def make_minwage_data():
 			row_values = sh.row_values(rownum)
 			data = OrderedDict()
 			data['state'] = row_values[0]
+			data['year'] = colnum + 1990
 			data['min wage'] = row_values[colnum + 1]
 			minwageData.append(data)
 	
@@ -254,12 +255,22 @@ def get_income_data():
 # get 1900 population data by state
 def get_popchange_data():
 	#open file containing data json
-	# to use file that includes the test data (accuracy: 0.962962962963)
+	# to use file that includes the test data
 	with open('populationdata.json', 'r') as f:
 	     read_data = f.read()
 	     popdata = json.loads(read_data)
 	f.closed
 	return popdata
+
+# get minimum wage data by state
+def get_minwage_data():
+	#open file containing data json
+	# to use file that includes the test data
+	with open('minwagedata.json', 'r') as f:
+	     read_data = f.read()
+	     minwagedata = json.loads(read_data)
+	f.closed
+	return minwagedata
 
 # get crime data by state and year
 def get_crime_data():
@@ -393,6 +404,52 @@ def combine_income(crimedata, incomeData):
 				break
 	return data
 
+# combines the minimum wage data and the
+# election/energy/income/crime data into one structure
+def combine_minwage(crimedata, minwageData):
+	data = []
+	for x in range(0, len(crimedata)): # for each state
+		for i in range(0,len(minwageData)):
+			if (minwageData[i]['state'] == crimedata[x]['state'] and
+				minwageData[i]['year'] == crimedata[x]['year']):
+				crime = crimedata[x]
+				minwage = minwageData[i]
+				dataPt = {
+					"result": 				crime['result'],
+					"index":				crime['index'],
+					"violent":				crime['violent'],
+					"property":				crime['property'],
+					"murder":				crime['murder'],
+					"forcible rape":		crime['forcible rape'],
+					"robbery":				crime['robbery'],
+					"aggravated assault": 	crime['aggravated assault'],
+					"burglary":				crime['burglary'],
+					"larceny theft":		crime['larceny theft'],
+					"vehicle theft":		crime['vehicle theft'],
+					"population":			crime['population'],
+					"state": 				crime['state'],
+					"year": 				crime['year'],
+					"prev":					crime['prev'],
+					"coal":					crime['coal'],
+					"hydro":				crime['hydro'],
+					"natural gas":			crime['natural gas'],
+					"petroleum":			crime['petroleum'],
+					"wind":					crime['wind'],
+					"wood":					crime['wood'],
+					"nuclear":				crime['nuclear'],
+					"biomass":				crime['biomass'],
+					"other gas":			crime['other gas'],
+					"geothermal":			crime['geothermal'],
+					"pumped storage":		crime['pumped storage'],
+					"solar":				crime['solar'],
+					#"income":				income['income'],
+					"income stderr":		crime['income stderr'],
+					"min wage":				minwage['min wage']
+				}
+				data.append(dataPt)
+				break
+	return data
+
 # combines the 1900 population data (will be used to calculate population
 # change) and the election/income/energy/crime data into one structure
 def combine_1900pop(crimedata, popdata):
@@ -414,13 +471,14 @@ make_minwage_data()
 elections = get_election_data()
 energyData = get_energy_data()
 incomeData = get_income_data()
-crimedata = get_crime_data()
 popData = get_popchange_data()
+minwageData = get_minwage_data()
+crimedata = get_crime_data()
 data = combine_crimes(elections, crimedata)
 data = combine_energy(data, energyData)
 data = combine_income(data, incomeData)
 data = combine_1900pop(data, popData)
-
+data = combine_minwage(data, minwageData)
 j = json.dumps(data)
 with open('data.json', 'w') as f:
 	    	f.write(j)

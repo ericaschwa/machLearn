@@ -60,7 +60,7 @@ def calculate_averages():
 		"petroleum":0.0, 	   "wind":0.0, 				   "wood":0.0,
 		"nuclear":0.0, 		   "biomass":0.0,		 	   "other gas": 0.0,
 		"geothermal":0.0, 	   "pumped storage":0.0,	   "solar":0.0,
-		"income stderr":0.0
+		"income stderr":0.0,   "min wage":0,0
 	}
 	for val in averages:
 		count = 0.0
@@ -94,7 +94,7 @@ for x in range (0, len(data)):
 		"petroleum":0.0, 	   "wind":0.0, 				   "wood":0.0,
 		"nuclear":0.0, 		   "biomass":0.0,		 	   "other gas": 0.0,
 		"geothermal":0.0, 	   "pumped storage":0.0,	   "solar":0.0,
-		"income stderr":0.0
+		"income stderr":0.0,   "min wage":0,0
 	}
 	averages = calculate_averages()
 	start = time.time()

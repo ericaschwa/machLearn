@@ -456,7 +456,7 @@ def combine_1900pop(crimedata, popdata):
 	for data in crimedata:
 		for state in popdata:
 			if (data['state'] == state['state']):
-				data['pop change'] = (data['population'] - state['1900 pop'])/state['1900 pop']
+				data['pop change'] = (data['population'] - state['1900 pop']) / state['1900 pop']
 	return crimedata
 
 ###############################################################################
@@ -468,17 +468,21 @@ make_energy_data()
 make_income_data()
 make_popchange_data()
 make_minwage_data()
+
 elections = get_election_data()
 energyData = get_energy_data()
 incomeData = get_income_data()
 popData = get_popchange_data()
 minwageData = get_minwage_data()
+
 crimedata = get_crime_data()
+
 data = combine_crimes(elections, crimedata)
 data = combine_energy(data, energyData)
 data = combine_income(data, incomeData)
 data = combine_1900pop(data, popData)
 data = combine_minwage(data, minwageData)
+
 j = json.dumps(data)
 with open('data.json', 'w') as f:
 	    	f.write(j)

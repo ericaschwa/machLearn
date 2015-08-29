@@ -203,6 +203,8 @@ def make_popchange_data():
 def make_minwage_data():
 	# Open the workbook
 	wb = xlrd.open_workbook('minwages.xlsx')
+	# there are 2 sheets in the workbook, but the first gets better
+	# accuracy than the second
 	sh = wb.sheet_by_index(0)
 
 	minwageData = []
@@ -397,7 +399,7 @@ def combine_income(crimedata, incomeData):
 					"geothermal":			crime['geothermal'],
 					"pumped storage":		crime['pumped storage'],
 					"solar":				crime['solar'],
-					#"income":				income['income'],
+					"income":				income['income'],
 					"income stderr":		income['income stderr']
 				}
 				data.append(dataPt)
@@ -442,7 +444,7 @@ def combine_minwage(crimedata, minwageData):
 					"geothermal":			crime['geothermal'],
 					"pumped storage":		crime['pumped storage'],
 					"solar":				crime['solar'],
-					#"income":				income['income'],
+					"income":				income['income'],
 					"income stderr":		crime['income stderr'],
 					"min wage":				minwage['min wage']
 				}

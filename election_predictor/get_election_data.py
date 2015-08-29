@@ -444,7 +444,7 @@ def combine_minwage(crimedata, minwageData):
 					"geothermal":			crime['geothermal'],
 					"pumped storage":		crime['pumped storage'],
 					"solar":				crime['solar'],
-					"income":				income['income'],
+					"income":				crime['income'],
 					"income stderr":		crime['income stderr'],
 					"min wage":				minwage['min wage']
 				}

@@ -12,6 +12,7 @@
 #				  0.709141274238 with income data 							  #
 #				  0.736842105263 with just income stderr 					  #
 #				  0.722068328717 with population change data 				  #
+#				  0.722991689751 with minimum wage data 					  #
 #																			  #
 # 		Accuracy values and significance of the difference between these	  #
 #			values and a 50% accuracy (guessing)							  #

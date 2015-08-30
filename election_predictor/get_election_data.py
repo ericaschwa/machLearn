@@ -458,7 +458,8 @@ def combine_1900pop(crimedata, popdata):
 	for data in crimedata:
 		for state in popdata:
 			if (data['state'] == state['state']):
-				data['pop change'] = (data['population'] - state['1900 pop']) / state['1900 pop']
+				data['pop change'] = \
+				(data['population'] - state['1900 pop']) / state['1900 pop']
 	return crimedata
 
 ###############################################################################

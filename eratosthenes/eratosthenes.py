@@ -16,8 +16,7 @@ import sys
 
 def check(current, arr):
 	for val in arr:
-		print val
-		if (val["num"] % current == 0):
+		if (val["num"] != current and val["num"] % current == 0):
 			val["prime"] = 0
 	return arr
 

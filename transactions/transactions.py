@@ -29,28 +29,58 @@ def organize(data):
 	IDs = []
 	for item in data:
 		ID = item['subscription']
-		alreadyHas = false
+		alreadyHas = 0
 		for val in IDs:
 			if (val['id'] == ID):
-				alreadyHas = true
-				val['subscriptions'].append({ "id": 	item['id'],
-											  "amount": item['amount'],
-											  "date": item['date']
+				alreadyHas = 1
+				val['subscriptions'].append({ "id": 		item['id'],
+											  "amount": 	item['amount'],
+											  "date": 		item['date'],
+								   			  "duration":	0,
+											  "type":		'one-off'
 											})
-		if (not alreadyHas):
+				break
+		if (alreadyHas != 1):
 			IDs.append({
 				"id": ID,
 				"subscriptions": [{"id": 		item['id'],
 								   "amount": 	item['amount'],
-								   "date": 		item['date']
+								   "date": 		item['date'],
+								   "duration":	0,
+								   "type":		'one-off'
 								  }]
 				})
+	IDs = categorize(IDs)
+	IDs = calcDuration(IDs)
+	return IDs
 
 
 # categorizes subscriptions by whether they're daily, monthly, yearly, or
-# one-off
+# one-off. Sets "type" attribute of data.
 def categorize(data):
+	# sort data by date (date is in terms of days)
+	data = insertionSort(data)
+
+	# then categorize it
 	return 1
+
+def calcDuration(data):
+	return 1
+
+# sorts the data items by date
+def insertionSort(array):
+	for val in range(0,len(array)):
+		data = array[val]['subscriptions']
+		for index in range(1,len(data)):
+			currentvalue = data[index]['date']
+			position = index
+			print data[position - 1]
+			while (position > 0 and data[position - 1]['date'] > currentvalue):
+				data[position] = data[position - 1]
+				position = position - 1
+			data[position] = currentvalue
+	return array
+
 
 ###############################################################################
 #									MAIN									  #
@@ -64,4 +94,4 @@ f.closed
 
 # organize data by subscription ID and print
 organizedData = organize(data)
-print organizedData
+# print organizedData

@@ -1,27 +1,17 @@
 ###############################################################################
 #																			  #
-# 	This program exhibits machine learning by reading in various pieces of 	  #
-#	data by state and year, and based on correct examples, predicts the 	  #
-#	outcome of the closest upcoming presidential election to that date in 	  #
-#	that state.																  #
+# 	This program does not exhibit machine learning persay. Instead, it is an  #
+#	attempt at the 2015 Mindsumo challenge. This module specifically focuses  #
+#   on the main challenge; the bonus questions are dealt with in other 		  #
+#   modules. The challenge is as folows:		 							  #
 #																			  #
-#	Used crime data because that was the data available to me.				  #
-#																			  #
-#		Accuracy: 0.581837381204 without energy data 						  #
-#				  0.716528162512 with energy data							  #
-#				  0.709141274238 with income data 							  #
-#				  0.736842105263 with just income stderr 					  #
-#				  0.722068328717 with population change data 				  #
-#				  0.722991689751 with minimum wage data 					  #
-#																			  #
-# 		Accuracy values and significance of the difference between these	  #
-#			values and a 50% accuracy (guessing)							  #
-#			P value and statistical significance: 							  #
-#  			The two-tailed P value is less than 0.0001						  #
-#  			By conventional criteria, this difference is considered to be 	  #
-#			extremely statistically significant. 							  #
-#																			  #
-#			 (source: http://graphpad.com/quickcalcs/oneSampleT2/)			  #
+#	"Using the transactions data attached below, ..." (by the run time of  	  #
+#	this program, these transactions will be stored in JSON format in a   	  #
+#   file called data.json)", write a script in Java, Python, C/C++, or 		  #
+#	JavaScript that outputs a list of subscription IDs, their subscription 	  #
+#	type (daily, monthly, yearly, one-off), and the duration of their 		  #
+#	subscription. 														 	  #
+#	(source: https://www.mindsumo.com/contests/credit-card-transactions)	  #
 #																			  #
 ###############################################################################
 

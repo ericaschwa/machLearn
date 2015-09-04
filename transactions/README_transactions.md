@@ -19,3 +19,10 @@ new subscribers)"
 
 This program tries to solve all three of these questions. However, at this
 point, it is still in the beginning stages.
+
+
+To run program that puts data into JSON form:
+python "get_transaction_data.py"
+
+To run program that solves the main (required) question:
+python "transactions.py"

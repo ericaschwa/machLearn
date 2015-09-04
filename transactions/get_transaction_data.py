@@ -30,7 +30,7 @@ def make_data():
 		data['id'] = row_values[0]
 		data['subscription'] = row_values[1]
 		data['amount'] = row_values[2]
-		data['data'] = row_values[3]
+		data['date'] = row_values[3]
 		transactionData.append(data)
 	
 	# Put the list of dicts to JSON

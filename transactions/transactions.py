@@ -33,23 +33,10 @@ def organize(data):
 		for val in IDs:
 			if (val['id'] == ID):
 				alreadyHas = 1
-				val['subscriptions'].append({ "id": 		item['id'],
-											  "amount": 	item['amount'],
-											  "date": 		item['date'],
-								   			  "duration":	0,
-											  "type":		'one-off'
-											})
-				break
-		if (alreadyHas != 1):
-			IDs.append({
-				"id": ID,
-				"subscriptions": [{"id": 		item['id'],
-								   "amount": 	item['amount'],
-								   "date": 		item['date'],
-								   "duration":	0,
-								   "type":		'one-off'
-								  }]
-				})
+				val['subscriptions'].append({"id":item['id'],"amount":item['amount'],"date":item['date'],"duration":0,"type":'one-off'})
+		if (alreadyHas == 0):
+			IDs.append({"id": ID,"subscriptions": []})
+			IDs[len(IDs) - 1]['subscriptions'].append({"id":item['id'],"amount":item['amount'],"date":item['date'],"duration":0,"type":'one-off'})
 	IDs = categorize(IDs)
 	IDs = calcDuration(IDs)
 	return IDs

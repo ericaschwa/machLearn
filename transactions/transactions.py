@@ -31,25 +31,23 @@ def organize(data):
 		ID = item['subscription']
 		alreadyHas = 0
 		for val in IDs:
-			if (val['id'] == ID):
+			if (val['id'] == ID): # ID already appears, put data in with that
 				alreadyHas = 1
 				val['subscriptions'].append({
 					"id":		item['id'],
 					"amount":	item['amount'],
-					"date":		item['date'],
-					"duration":	0,
-					"type":		'one-off'
+					"date":		item['date']
 				})
 				break
-		if (alreadyHas == 0):
+		if (alreadyHas == 0): # ID is new, create a new entry for it
 			IDs.append({
-				"id": ID,
+				"id": 			ID,
+				"duration":		0,
+				"type":			'one-off',
 				"subscriptions":[{
 					"id":		item['id'],
 					"amount":	item['amount'],
-					"date":		item['date'],
-					"duration":	0,
-					"type":		'one-off'
+					"date":		item['date']
 				}]
 			})
 	IDs = categorize(IDs)
@@ -66,15 +64,23 @@ def categorize(data):
 	# then categorize it
 	for val in data:
 		items = val['subscriptions']
-		# if there are fewer than two items, the type is one-off (the default)
-		if (len(items) < 2):
-			break
+		# if there are one or fewer items, the type is one-off (the default)
+		if (len(items) > 1):
+			diff = items[1]['date'] - items[0]['date']
+			if (diff > -1 and diff < 3): # daily, room for error of 2
+				val['type'] = 'daily'
+			elif (diff > 27 and diff < 33): # monthly, room for error of 3
+				val['type'] = 'monthly'
+			elif (diff > 360 and diff < 370): # yearly, room for error of 5
+				val['type'] = 'yearly'
+			else:
+				print "ERROR: type of some entries doesn't fit into a category"
 
-
+# calculates the duration of each subscription. Sets "duration" attribute of data.
 def calcDuration(data):
 	return 1
 
-# sorts the data items by date
+# sorts the data items by date; uses classic insertion sort algorithm
 def insertionSort(array):
 	for val in range(0,len(array)):
 		data = array[val]['subscriptions']
@@ -86,7 +92,6 @@ def insertionSort(array):
 				position = position - 1
 			data[position] = currentvalue
 	return array
-
 
 ###############################################################################
 #									MAIN									  #
@@ -100,4 +105,5 @@ f.closed
 
 # organize data by subscription ID and print
 organizedData = organize(data)
-# print organizedData
+# for val in organizedData:
+# 	print val['id'], val['type'], val['duration']

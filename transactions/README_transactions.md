@@ -2,6 +2,7 @@ This program does not exhibit machine learning persay. Instead, it is an
 attempt at the 2015 Mindsumo challenge. The challenge is as folows:
 
 
+
 "Write a script:
 
 Using the transactions data attached below, write a script in Java, Python,
@@ -17,8 +18,12 @@ had the highest revenue growth, and highest revenue loss?
 2. Predict annual revenue for year 2015 (based on historical retention and
 new subscribers)"
 
+
+
 This program tries to solve all three of these questions. However, at this
 point, it is still in the beginning stages.
+
+
 
 
 To run program that puts data into JSON form:

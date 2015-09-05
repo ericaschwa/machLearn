@@ -33,10 +33,25 @@ def organize(data):
 		for val in IDs:
 			if (val['id'] == ID):
 				alreadyHas = 1
-				val['subscriptions'].append({"id":item['id'],"amount":item['amount'],"date":item['date'],"duration":0,"type":'one-off'})
+				val['subscriptions'].append({
+					"id":		item['id'],
+					"amount":	item['amount'],
+					"date":		item['date'],
+					"duration":	0,
+					"type":		'one-off'
+				})
+				break
 		if (alreadyHas == 0):
-			IDs.append({"id": ID,"subscriptions": []})
-			IDs[len(IDs) - 1]['subscriptions'].append({"id":item['id'],"amount":item['amount'],"date":item['date'],"duration":0,"type":'one-off'})
+			IDs.append({
+				"id": ID,
+				"subscriptions":[{
+					"id":		item['id'],
+					"amount":	item['amount'],
+					"date":		item['date'],
+					"duration":	0,
+					"type":		'one-off'
+				}]
+			})
 	IDs = categorize(IDs)
 	IDs = calcDuration(IDs)
 	return IDs
@@ -49,7 +64,12 @@ def categorize(data):
 	data = insertionSort(data)
 
 	# then categorize it
-	return 1
+	for val in data:
+		items = val['subscriptions']
+		# if there are fewer than two items, the type is one-off (the default)
+		if (len(items) < 2):
+			break
+
 
 def calcDuration(data):
 	return 1
@@ -59,10 +79,9 @@ def insertionSort(array):
 	for val in range(0,len(array)):
 		data = array[val]['subscriptions']
 		for index in range(1,len(data)):
-			currentvalue = data[index]['date']
+			currentvalue = data[index]
 			position = index
-			print data[position - 1]
-			while (position > 0 and data[position - 1]['date'] > currentvalue):
+			while (position > 0 and data[position - 1]['date'] > currentvalue['date']):
 				data[position] = data[position - 1]
 				position = position - 1
 			data[position] = currentvalue

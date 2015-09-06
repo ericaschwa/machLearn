@@ -42,8 +42,8 @@ def organize(data):
 		if (alreadyHas == 0): # ID is new, create a new entry for it
 			IDs.append({
 				"id": 			ID,
-				"duration":		0,
-				"type":			'one-off',
+				"duration":		0, # default value for duration
+				"type":			'one-off', # default value for type
 				"subscriptions":[{
 					"id":		item['id'],
 					"amount":	item['amount'],
@@ -58,7 +58,7 @@ def organize(data):
 # categorizes subscriptions by whether they're daily, monthly, yearly, or
 # one-off. Sets "type" attribute of data.
 def categorize(data):
-	# sort data by date (date is in terms of days)
+	# sort each subscription list by date (date is in terms of days)
 	data = insertionSort(data)
 
 	# then categorize it
@@ -66,6 +66,7 @@ def categorize(data):
 		items = val['subscriptions']
 		# if there are one or fewer items, the type is one-off (the default)
 		if (len(items) > 1):
+			# this works because the subscriptions list is sorted by date
 			diff = items[1]['date'] - items[0]['date']
 			if (diff > -1 and diff < 3): # daily, room for error of 2
 				val['type'] = 'daily'
@@ -78,12 +79,18 @@ def categorize(data):
 
 # calculates the duration of each subscription. Sets "duration" attribute of data.
 def calcDuration(data):
-	return 1
+	for val in data:
+		items = val['subscriptions']
+		# this works because the subscriptions list is sorted by date
+		val['duration'] = items[len(items)-1]['date'] - items[0]['date']
 
-# sorts the data items by date; uses classic insertion sort algorithm
+
+
+# sorts the subscription lists by date; uses classic insertion sort algorithm
 def insertionSort(array):
 	for val in range(0,len(array)):
-		data = array[val]['subscriptions']
+		data = array[val]['subscriptions'] # get array to sort, then sort it
+
 		for index in range(1,len(data)):
 			currentvalue = data[index]
 			position = index
@@ -91,6 +98,7 @@ def insertionSort(array):
 				data[position] = data[position - 1]
 				position = position - 1
 			data[position] = currentvalue
+
 	return array
 
 ###############################################################################

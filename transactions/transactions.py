@@ -10,7 +10,7 @@
 #   file called data.json) "... write a script in Java, Python, C/C++, or 	  #
 #	JavaScript that outputs a list of subscription IDs, their subscription 	  #
 #	type (daily, monthly, yearly, one-off), and the duration of their 		  #
-#	subscription. 														 	  #
+#	subscription."														 	  #
 #	(source: https://www.mindsumo.com/contests/credit-card-transactions)	  #
 #																			  #
 ###############################################################################
@@ -77,6 +77,8 @@ def categorize(data):
 			else:
 				print "ERROR: type of some entries doesn't fit into a category"
 
+	return data
+
 # calculates the duration of each subscription. Sets "duration" attribute of data.
 def calcDuration(data):
 	for val in data:
@@ -84,7 +86,7 @@ def calcDuration(data):
 		# this works because the subscriptions list is sorted by date
 		val['duration'] = items[len(items)-1]['date'] - items[0]['date']
 
-
+	return data
 
 # sorts the subscription lists by date; uses classic insertion sort algorithm
 def insertionSort(array):
@@ -113,5 +115,10 @@ f.closed
 
 # organize data by subscription ID and print
 organizedData = organize(data)
-# for val in organizedData:
-# 	print val['id'], val['type'], val['duration']
+for val in organizedData:
+	print val['id'], val['type'], val['duration']
+
+# also save this data structure as a JSON file
+# with open('organizedData.json', 'w') as f:
+# 	f.write(organizedData)
+# f.closed

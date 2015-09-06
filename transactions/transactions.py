@@ -119,6 +119,7 @@ for val in organizedData:
 	print val['id'], val['type'], val['duration']
 
 # also save this data structure as a JSON file
-# with open('organizedData.json', 'w') as f:
-# 	f.write(organizedData)
-# f.closed
+j = json.dumps(organizedData)
+with open('organizedData.json', 'w') as f:
+    f.write(j)
+f.closed

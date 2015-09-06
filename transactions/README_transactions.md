@@ -21,13 +21,21 @@ new subscribers)"
 
 
 This program tries to solve all three of these questions. However, at this
-point, it is still in the beginning stages.
+point, it can solve the main challenge but is still in the beginning stages
+for the bonus questions.
 
 
 
 
-To run program that puts data into JSON form:
+To run program that puts data into JSON file form:
 python "get_transaction_data.py"
 
-To run program that solves the main (required) question:
+To run program that solves the main (required) question and puts the data,
+which has been newly organized, into JSON file form:
 python "transactions.py"
+
+To run the program that solves the first bonus question:
+python "bonus1.py"
+
+To run the program that solves the second bonus question:
+python "bonus2.py"

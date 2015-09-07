@@ -36,8 +36,7 @@ def organize(data, yearData):
 	# add all amounts to the appropriate year
 	for item in data:
 		for val in years:
-			itemYear = item['date'] # TODO
-			if (val['year'] == itemYear):
+			if (val['year'] == item['date']):
 				val['amount'] += item['amount']
 				break
 
@@ -73,10 +72,4 @@ for val in years:
 
 # print find_highest(years)
 # print find_lowest(years)
-
-# also save this data structure as a JSON file
-j = json.dumps(years)
-with open('bonus1.json', 'w') as f:
-    f.write(j)
-f.closed
 	

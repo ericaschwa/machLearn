@@ -18,16 +18,55 @@ import sys
 #							 FUNCTION DEFINITIONS							  #
 ###############################################################################
 
+# organizes the data by year so that the program can then print
+# the list of years, and the revenue each year
+def organize(data):
+	# initialize all years between 1966 and 2014 to a revenue of 0
+	years = []
+	for n in range(1966,2015):
+		years.append({"year":n,"amount":0})
+
+	# add all amounts to the appropriate year
+	for item in data:
+		for val in years:
+			itemYear = item['date'] # TODO
+			if (val['year'] == itemYear):
+				val['amount'] += item['amount']
+				break
+
+	print data[0]['date']
+	print data[4]['date']
+
+	return years
+
+
+def find_highest(data):
+	return 1
+
+def find_lowest(data):
+	return 1
 
 ###############################################################################
 #									MAIN									  #
 ###############################################################################
 
 #open file containing data json
-with open('organizedData.json', 'r') as f:
+with open('data.json', 'r') as f:
     read_data = f.read()
     data = json.loads(read_data)
 f.closed
 
-print data[0]
+# organize data by subscription ID and print
+years = organize(data)
+# for val in years:
+# 	print val
+
+# print find_highest(years)
+# print find_lowest(years)
+
+# also save this data structure as a JSON file
+j = json.dumps(years)
+with open('years.json', 'w') as f:
+    f.write(j)
+f.closed
 	

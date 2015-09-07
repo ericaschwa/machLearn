@@ -120,6 +120,6 @@ for val in organizedData:
 
 # also save this data structure as a JSON file
 j = json.dumps(organizedData)
-with open('organizedData.json', 'w') as f:
+with open('transactions.json', 'w') as f:
     f.write(j)
 f.closed

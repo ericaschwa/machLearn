@@ -20,11 +20,18 @@ import sys
 
 # organizes the data by year so that the program can then print
 # the list of years, and the revenue each year
-def organize(data):
+def organize(data, yearData):
 	# initialize all years between 1966 and 2014 to a revenue of 0
 	years = []
 	for n in range(1966,2015):
 		years.append({"year":n,"amount":0})
+
+	# set the "date" attribute of each data item to a correct year value
+	for item in data:
+		for m in range(0,49):
+			if (item['date'] >= yearData[m]['date'] and
+				item['date'] < yearData[m+1]['date']):
+				item['date'] = 1966 + m
 
 	# add all amounts to the appropriate year
 	for item in data:
@@ -33,9 +40,6 @@ def organize(data):
 			if (val['year'] == itemYear):
 				val['amount'] += item['amount']
 				break
-
-	print data[0]['date']
-	print data[4]['date']
 
 	return years
 
@@ -56,17 +60,23 @@ with open('data.json', 'r') as f:
     data = json.loads(read_data)
 f.closed
 
+#open file containing data json
+with open('yearData.json', 'r') as f:
+    read_data = f.read()
+    yearData = json.loads(read_data)
+f.closed
+
 # organize data by subscription ID and print
-years = organize(data)
-# for val in years:
-# 	print val
+years = organize(data, yearData)
+for val in years:
+	print val
 
 # print find_highest(years)
 # print find_lowest(years)
 
 # also save this data structure as a JSON file
 j = json.dumps(years)
-with open('years.json', 'w') as f:
+with open('bonus1.json', 'w') as f:
     f.write(j)
 f.closed
 	

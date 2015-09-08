@@ -31,7 +31,6 @@ def organize(data):
 		ID = item['subscription']
 		alreadyHas = 0
 		for val in IDs:
-			print val['id'], ID
 			if (val['id'] == ID): # ID already appears, put data in with that
 				alreadyHas = 1
 				val['dates'].append(item['date'])

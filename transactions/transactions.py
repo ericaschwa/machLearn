@@ -50,11 +50,9 @@ def organize(data):
 # one-off. Sets "type" attribute of data.
 # also calculates the duration of each subscription, and sets the "duration"
 # attribute of the data.
+# given that each data item's "dates" array is already sorted (since the
+# csv file was sorted by date)
 def categorize(data):
-	# sort each subscription list by date (date is in terms of days)
-	data = insertionSort(data)
-
-	# then categorize it
 	for val in data:
 		items = val['dates']
 
@@ -75,22 +73,6 @@ def categorize(data):
 				print "ERROR: type of some entries doesn't fit into a category"
 
 	return data
-
-
-# sorts the subscription lists by date; uses classic insertion sort algorithm
-def insertionSort(array):
-	for val in range(0,len(array)):
-		data = array[val]['dates'] # get array to sort, then sort it
-
-		for index in range(1,len(data)):
-			currentvalue = data[index]
-			position = index
-			while (position > 0 and data[position - 1] > currentvalue):
-				data[position] = data[position - 1]
-				position = position - 1
-			data[position] = currentvalue
-
-	return array
 
 ###############################################################################
 #									MAIN									  #

@@ -39,6 +39,29 @@ def make_data():
 	    f.write(j)
 	f.closed
 
+# get the transaction data, turn it from csv format into JSON format
+# source: https://www.mindsumo.com/contests/credit-card-transactions
+# note: only gets the date and the subscription ID
+def make_dates_data():
+	# Open the workbook
+	with open('subscription_report-2.csv') as csvfile:
+		reader = csv.DictReader(csvfile)
+
+		transactionData = []
+
+		# Iterate through each row in worksheet and fetch values into dict
+		for row in reader:
+			data = OrderedDict()
+			data['subscription'] = row['Subscription ID']
+			data['date'] = row['Transaction Date']
+			transactionData.append(data)
+	
+	# Put the list of dicts to JSON
+	j = json.dumps(transactionData)
+	with open('data.json', 'w') as f:
+	    f.write(j)
+	f.closed
+
 # get the year cuttoff data, turn it from excel format into JSON format
 # (I put the year cuttoff data in, in order to make the first bonus question
 # easier)
@@ -67,5 +90,6 @@ def make_years():
 #									MAIN									  #
 ###############################################################################
 
-make_data()
+#make_data()
+make_dates_data()
 make_years()

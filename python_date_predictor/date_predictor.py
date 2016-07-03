@@ -91,7 +91,7 @@ for x in range (0, states_measured):
 
 		# for full struct: between .9121 and .9123;
 		# .9085 and .9090 for "clean weights"
-		while ((num_correct/count < 0.95) and (end-start < 30)):
+		while ((num_correct/count < 0.95) and (end-start < 10)):
 			# for just last 7: between .900 and .908
 			for i in range (0, states_measured): 
 				if (i != x):
@@ -128,4 +128,4 @@ for x in range (0, states_measured):
 			if (count_test == 1.1):
 				count_test = 1.0
 		print num_correct_test / count_test
-print wrong_years
+#print wrong_years

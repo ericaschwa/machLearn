@@ -17,6 +17,8 @@
 
 import json
 import sys
+import datetime
+from datetime import datetime
 
 ###############################################################################
 #							 FUNCTION DEFINITIONS							  #
@@ -26,25 +28,19 @@ import sys
 # the list of subscription IDs, their subscription type, and the duration of
 # their subscripton.
 def organize(data):
-	IDs = []
+	newdict = {}
 	for item in data:
 		ID = item['subscription']
-		alreadyHas = 0
-		for val in IDs:
-			if (val['id'] == ID): # ID already appears, put data in with that
-				alreadyHas = 1
-				val['dates'].append(item['date'])
-				break
-		if (alreadyHas == 0): # ID is new, create a new entry for it
-			IDs.append({
-				"id": 			ID,
+		date = datetime.strptime(item['date'], '%m/%d/%Y')
+		if ID in newdict:
+			newdict[ID]['dates'].append(date)
+		else:
+			newdict[ID] = {
 				"duration":		0, # default value for duration
 				"type":			'one-off', # default value for type
-				"dates":		[item['date']]
-			})
-	IDs = categorize(IDs)
-	return IDs
-
+				"dates":		[date]
+			}		
+	return newdict
 
 # categorizes subscriptions by whether they're daily, monthly, yearly, or
 # one-off. Sets "type" attribute of data.
@@ -53,16 +49,18 @@ def organize(data):
 # given that each data item's "dates" array is already sorted (since the
 # csv file was sorted by date)
 def categorize(data):
-	for val in data:
-		items = val['dates']
+	for key, val in data.iteritems():
+		dates = val['dates']
 
 		# this works because the subscriptions list is sorted by date
-		val['duration'] = items[len(items)-1] - items[0]
+		duration = dates[len(dates)-1] - dates[0]
+		val['duration'] = duration.days
 
 		# if there are one or fewer items, the type is one-off (the default)
-		if (len(items) > 1):
+		if (len(dates) > 1):
 			# this works because the subscriptions list is sorted by date
-			diff = items[1] - items[0]
+			timdeltadiff = dates[1] - dates[0]
+			diff = timdeltadiff.days
 			if (diff > -1 and diff < 3): # daily, room for error of 2
 				val['type'] = 'daily'
 			elif (diff > 27 and diff < 33): # monthly, room for error of 3
@@ -71,7 +69,7 @@ def categorize(data):
 				val['type'] = 'yearly'
 			else:
 				print "ERROR: type of some entries doesn't fit into a category"
-
+	
 	return data
 
 ###############################################################################
@@ -85,6 +83,7 @@ with open('data.json', 'r') as f:
 f.closed
 
 # organize data by subscription ID and print
-organizedData = organize(data)
-for val in organizedData:
-	print val['id'], val['type'], val['duration']
+datadict = organize(data)
+categorizedict = categorize(datadict)
+for key, val in categorizedict.iteritems():
+	print key, val['type'], val['duration']

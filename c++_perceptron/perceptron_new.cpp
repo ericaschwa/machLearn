@@ -46,14 +46,14 @@ struct Line {
 int    input_save           (Line lines [MAX_LINES]);
 int    input_load           (Line lines [MAX_LINES]);
 void   analyze              (Line lines [MAX_LINES], int num_lines,
-			                  string save, string load);
+                              string save, string load);
 bool   find_directions_save (Line lines [MAX_LINES], int num_lines,
-				  double weights[IMG_HGT][IMG_WID],
-			                               string save);
+                  double weights[IMG_HGT][IMG_WID],
+                                           string save);
 void   find_directions_load (Line lines [MAX_LINES], int num_lines,
-				  double weights[IMG_HGT][IMG_WID]);
+                  double weights[IMG_HGT][IMG_WID]);
 void set_line_scores        (Line lines [MAX_LINES], int num_lines,
-				  double weights[IMG_HGT][IMG_WID]);
+                  double weights[IMG_HGT][IMG_WID]);
 void   print                (Line lines [MAX_LINES], int num_lines);
 
 int main (int argc, char* argv[])
@@ -62,17 +62,17 @@ int main (int argc, char* argv[])
     string save = "";
     
     for (int i = 1; i < argc; ++i) {
-		if (std::string(argv[i]) == "-l") {
-	            load = "load";
-		} else if (std::string(argv[i]) == "-s") {
-	            save = "save";
-		}
+        if (std::string(argv[i]) == "-l") {
+                load = "load";
+        } else if (std::string(argv[i]) == "-s") {
+                save = "save";
+        }
     }
     
     Line lines[MAX_LINES];
     
-    if (save != "")			analyze(lines, input_save(lines), save, load);
-    else if (load != "")	analyze(lines, input_load(lines), save, load);
+    if (save != "")            analyze(lines, input_save(lines), save, load);
+    else if (load != "")    analyze(lines, input_load(lines), save, load);
     
     return 0;
 }
@@ -103,17 +103,17 @@ int input_save (Line lines [MAX_LINES])
     myReadFile.open("perceptron_test2.txt"); // file with correct answers
 
     for (int i = 0; ((i < MAX_LINES) && (!myReadFile.fail())); i++) {
-		myReadFile >> lines[i].true_direction; // read in true direction
-		if ((!myReadFile.fail()) && (lines[i].true_direction != -1)) {
-		    num_lines++;
-		    getline(myReadFile, input_line);
-		    for (int r = 0; r < IMG_HGT; r++) {
-				getline(myReadFile, input_line); // get and parse line in image
-				for (int c = 0; c < IMG_WID; c++) {
-				    lines[i].image[r][c] = input_line[c];
-				}
-		    }
-		}
+        myReadFile >> lines[i].true_direction; // read in true direction
+        if ((!myReadFile.fail()) && (lines[i].true_direction != -1)) {
+            num_lines++;
+            getline(myReadFile, input_line);
+            for (int r = 0; r < IMG_HGT; r++) {
+                getline(myReadFile, input_line); // get and parse line in image
+                for (int c = 0; c < IMG_WID; c++) {
+                    lines[i].image[r][c] = input_line[c];
+                }
+            }
+        }
     }
 
     myReadFile.close();
@@ -146,16 +146,16 @@ int input_load (Line lines [MAX_LINES])
     myReadFile.open("perceptron_test3.txt"); // file without correct answers
 
     for (int i = 0; ((i < MAX_LINES) && (!myReadFile.fail())); i++) {
-	myReadFile >> input_line;
-	if ((!myReadFile.fail()) && (input_line != "-1")) {
-	    num_lines++;
-	    getline(myReadFile, input_line);
-	    for (int r = 0; r < IMG_HGT; r++) {
-		getline(myReadFile, input_line); // get and parse line in image
-		for (int c = 0; c < IMG_WID; c++)
-		    lines[i].image[r][c] = input_line[c];
-	    }
-	}
+    myReadFile >> input_line;
+    if ((!myReadFile.fail()) && (input_line != "-1")) {
+        num_lines++;
+        getline(myReadFile, input_line);
+        for (int r = 0; r < IMG_HGT; r++) {
+        getline(myReadFile, input_line); // get and parse line in image
+        for (int c = 0; c < IMG_WID; c++)
+            lines[i].image[r][c] = input_line[c];
+        }
+    }
     }    
     myReadFile.close();
     return (num_lines);
@@ -188,20 +188,20 @@ void analyze (Line lines [MAX_LINES], int num_lines, string save, string load)
     double weights[IMG_HGT][IMG_WID];
     
     if (save != "") { // set weights to start weights
-		for (int r = 0; r < IMG_HGT; r++) {
-		    for (int c = 0; c < IMG_WID; c++)
-			weights[r][c] = START_WEIGHTS;
-		}
-		find_directions_save(lines, num_lines, weights, save);
+        for (int r = 0; r < IMG_HGT; r++) {
+            for (int c = 0; c < IMG_WID; c++)
+            weights[r][c] = START_WEIGHTS;
+        }
+        find_directions_save(lines, num_lines, weights, save);
     }
     else if (load != "") { // set weights to weights input
-		for (int r = 0; r < IMG_HGT; r++) {
-		    for (int c = 0; c < IMG_WID; c++) {
-			cin >> weights[r][c];
-		    }
-		}
-		find_directions_load(lines, num_lines, weights);
-		print(lines, num_lines);
+        for (int r = 0; r < IMG_HGT; r++) {
+            for (int c = 0; c < IMG_WID; c++) {
+            cin >> weights[r][c];
+            }
+        }
+        find_directions_load(lines, num_lines, weights);
+        print(lines, num_lines);
     }
 }
 
@@ -233,36 +233,36 @@ bool find_directions_save (Line lines [MAX_LINES], int num_lines,
     bool all_correct = true;
     set_line_scores(lines, num_lines, weights);
     for (int i = 0; i < num_lines; i++) {
-		if (lines[i].line_score < CUTOFF) // find calculated direction
-		    lines[i].calculated_direction = 0;
-		else
-		    lines[i].calculated_direction = 1;
-		if (lines[i].calculated_direction != lines[i].true_direction) { 
-			// incorrect answer
-		    all_correct = false;
-		    for (int r = 0; r < IMG_HGT; r++) {
-				for (int c = 0; c < IMG_WID; c++) {
-				    if (lines[i].image[r][c] == '1') {
-				    // adjust weights that caused incorrect result
-						if (lines[i].calculated_direction <
-						    lines[i].true_direction)
-						    weights[r][c] = weights[r][c] + .01;
-						else if (lines[i].calculated_direction >
-						         lines[i].true_direction)
-						    weights[r][c] = weights[r][c] - .01;
-					}
-				}
-		    }
-		}
+        if (lines[i].line_score < CUTOFF) // find calculated direction
+            lines[i].calculated_direction = 0;
+        else
+            lines[i].calculated_direction = 1;
+        if (lines[i].calculated_direction != lines[i].true_direction) { 
+            // incorrect answer
+            all_correct = false;
+            for (int r = 0; r < IMG_HGT; r++) {
+                for (int c = 0; c < IMG_WID; c++) {
+                    if (lines[i].image[r][c] == '1') {
+                    // adjust weights that caused incorrect result
+                        if (lines[i].calculated_direction <
+                            lines[i].true_direction)
+                            weights[r][c] = weights[r][c] + .01;
+                        else if (lines[i].calculated_direction >
+                                 lines[i].true_direction)
+                            weights[r][c] = weights[r][c] - .01;
+                    }
+                }
+            }
+        }
     }
     // keep going and adjusting weights until it gets them all correct
     if (all_correct) { 
-		for (int r = 0; r < IMG_HGT; r++) {
-		    for (int c = 0; c < IMG_WID; c++) {
-	                cout << weights[r][c] << endl; // print the weights
-		    }
-		}
-		return true;
+        for (int r = 0; r < IMG_HGT; r++) {
+            for (int c = 0; c < IMG_WID; c++) {
+                    cout << weights[r][c] << endl; // print the weights
+            }
+        }
+        return true;
     } else return find_directions_save(lines, num_lines, weights, save);   
 }
 
@@ -285,17 +285,17 @@ bool find_directions_save (Line lines [MAX_LINES], int num_lines,
 // returns:   void function.
 // effects:   modifies the lines' calculated directions.
 void find_directions_load (Line lines [MAX_LINES], int num_lines,
-					      double weights[IMG_HGT][IMG_WID])
+                          double weights[IMG_HGT][IMG_WID])
 {
     set_line_scores(lines, num_lines, weights);
     
     for (int i = 0; i < num_lines; i++) {
     // calculate direction based on line score
-		if (lines[i].line_score < CUTOFF)
-		    lines[i].calculated_direction = 0;
-		else
-		    lines[i].calculated_direction = 1;
-	}  
+        if (lines[i].line_score < CUTOFF)
+            lines[i].calculated_direction = 0;
+        else
+            lines[i].calculated_direction = 1;
+    }  
 }
 
 // set_line_scores
@@ -317,16 +317,16 @@ void find_directions_load (Line lines [MAX_LINES], int num_lines,
 // returns:   void function.
 // effects:   modifies the Line's line_scores.
 void set_line_scores (Line lines [MAX_LINES], int num_lines,
-					  double weights[IMG_HGT][IMG_WID])
+                      double weights[IMG_HGT][IMG_WID])
 {
     for (int i = 0; i < num_lines; i++) { // calculate line score for each line
-		lines[i].line_score = 0;
-		for (int r = 0; r < IMG_HGT; r++) {
-		    for (int c = 0; c < IMG_WID; c++) {
-			    lines[i].line_score = lines[i].line_score +
-			    (weights[r][c] * lines[i].image[r][c]);
-		    }
-		}
+        lines[i].line_score = 0;
+        for (int r = 0; r < IMG_HGT; r++) {
+            for (int c = 0; c < IMG_WID; c++) {
+                lines[i].line_score = lines[i].line_score +
+                (weights[r][c] * lines[i].image[r][c]);
+            }
+        }
     }
 }
 
@@ -350,7 +350,7 @@ void set_line_scores (Line lines [MAX_LINES], int num_lines,
 void print (Line lines [MAX_LINES], int num_lines)
 {
     for (int i = 0; i < num_lines; i++) {
-		cout << lines[i].calculated_direction << ", ";
+        cout << lines[i].calculated_direction << ", ";
     }
     cout << "-1" << endl;
 }

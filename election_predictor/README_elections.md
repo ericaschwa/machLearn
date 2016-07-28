@@ -10,6 +10,7 @@ This program is 73% accurate, and takes a relatively long amount of time
 (15 minutes) to do this, because the data set is large and because the
 standard for accuracy is relatively high considering
 the fact that this data is not sufficient to truly predict an election.
+When held to 4 minutes, the program's accuracy drops to 70%.
 
 As it currently stands, the program takes in data for all 50 states
 over a time span of 25 years. For each year in each state, predicts
